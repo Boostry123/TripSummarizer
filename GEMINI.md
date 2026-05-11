@@ -6,7 +6,7 @@ TripSummarizer is a web application designed to capture and synthesize travel ex
 ## Core Mandates
 - **Documentation Policy**: This `GEMINI.md` file MUST be updated whenever a major feature is added, folder structures are modified, or significant architectural decisions are made. It serves as the primary context for the project.
 - **Surgical Modification Policy**: DO NOT change code that is unnecessary. Only update and change what is actually relevant to the specific task assigned. Maintain existing patterns and avoid unrelated refactoring.
-- **Validation Mandate**: After every code modification, you MUST verify the changes by running the project's build, linting, or type-checking commands (e.g., `npm run build` or `npx tsc --noEmit` in the Web project) to ensure no regressions or TypeScript errors were introduced.
+- **Validation Mandate**: After every code modification, you MUST verify the changes by running the project's validation script (`npm run validate` in either the Web or Server directory) to ensure no regressions, linting issues, or TypeScript errors were introduced.
 
 ## Tech Stack
 - **Frontend**: React (Vite), TypeScript, Tailwind CSS 4, TanStack React Query (Caching)
