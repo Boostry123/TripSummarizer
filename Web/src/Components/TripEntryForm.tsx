@@ -11,7 +11,12 @@ import {
   HiStar,
 } from "react-icons/hi";
 
-const TripEntryForm = () => {
+type entryProps = {
+  onClose: () => void;
+};
+
+const TripEntryForm = (props: entryProps) => {
+  const { onClose } = props;
   const isMobile = useMobile();
   const [step, setStep] = useState(1);
   const [formData, setFormData] = useState<TripData>({
@@ -64,7 +69,16 @@ const TripEntryForm = () => {
   };
 
   return (
-    <Card className="max-w-2xl mx-auto" padding={isMobile ? "small" : "medium"}>
+    <Card className="max-w-2xl mx-auto relative" padding={isMobile ? "small" : "medium"}>
+      {/* Close Button */}
+      <button
+        onClick={onClose}
+        className="absolute top-4 right-4 text-slate-400 hover:text-slate-600 dark:hover:text-slate-200 transition-colors p-2 z-10"
+        aria-label="Close"
+      >
+        <HiX className="text-2xl" />
+      </button>
+
       {/* Progress Bar */}
       <div className="w-full bg-slate-100 dark:bg-slate-700 h-2 rounded-full mb-8 overflow-hidden">
         <div
@@ -283,6 +297,7 @@ const TripEntryForm = () => {
               onClick={() => {
                 console.log("Final Data:", formData);
                 alert("Trip Saved (check console)");
+                onClose();
               }}
               className="flex-1 bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-500/20 flex items-center justify-center gap-2"
             >
