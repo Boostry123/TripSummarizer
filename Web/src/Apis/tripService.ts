@@ -1,5 +1,5 @@
-import apiClient from './apiClient';
-import { TripData, Trip, TripUpdate } from '@/Types/trip';
+import apiClient from "./apiClient";
+import { TripData, Trip, TripUpdate } from "@/Types/trip";
 
 /**
  * Trip API Service
@@ -7,12 +7,12 @@ import { TripData, Trip, TripUpdate } from '@/Types/trip';
  */
 
 export const createTrip = async (tripData: TripData): Promise<Trip> => {
-  const response = await apiClient.post<Trip>('/trips', tripData);
+  const response = await apiClient.post<Trip>("/trips", tripData);
   return response.data;
 };
 
 export const getTrips = async (): Promise<Trip[]> => {
-  const response = await apiClient.get<Trip[]>('/trips');
+  const response = await apiClient.get<Trip[]>("/trips");
   return response.data;
 };
 
@@ -21,7 +21,10 @@ export const getTripById = async (id: string): Promise<Trip> => {
   return response.data;
 };
 
-export const updateTrip = async (id: string, tripData: TripUpdate): Promise<Trip> => {
+export const updateTrip = async (
+  id: string,
+  tripData: TripUpdate,
+): Promise<Trip> => {
   const response = await apiClient.patch<Trip>(`/trips/${id}`, tripData);
   return response.data;
 };

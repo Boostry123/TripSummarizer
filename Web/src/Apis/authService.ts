@@ -1,5 +1,9 @@
-import apiClient from '@/Apis/apiClient';
-import { LoginCredentials, RegisterCredentials, AuthResponse } from '@/Types/auth';
+import apiClient from "@/Apis/apiClient";
+import {
+  LoginCredentials,
+  RegisterCredentials,
+  AuthResponse,
+} from "@/Types/auth";
 
 /**
  * Auth Service
@@ -10,7 +14,10 @@ export const authService = {
    * Register a new user
    */
   signup: async (credentials: RegisterCredentials): Promise<AuthResponse> => {
-    const response = await apiClient.post<AuthResponse & { message: string }>('/auth/signup', credentials);
+    const response = await apiClient.post<AuthResponse & { message: string }>(
+      "/auth/signup",
+      credentials,
+    );
     return response.data;
   },
 
@@ -18,7 +25,10 @@ export const authService = {
    * Login an existing user
    */
   login: async (credentials: LoginCredentials): Promise<AuthResponse> => {
-    const response = await apiClient.post<AuthResponse & { message: string }>('/auth/login', credentials);
+    const response = await apiClient.post<AuthResponse & { message: string }>(
+      "/auth/login",
+      credentials,
+    );
     return response.data;
   },
 
@@ -26,14 +36,14 @@ export const authService = {
    * Logout the current user
    */
   logout: async (): Promise<void> => {
-    await apiClient.post('/auth/logout');
+    await apiClient.post("/auth/logout");
   },
 
   /**
    * Get current user profile
    */
   getCurrentUser: async (): Promise<AuthResponse> => {
-    const response = await apiClient.get<AuthResponse>('/auth/profile');
+    const response = await apiClient.get<AuthResponse>("/auth/profile");
     return response.data;
   },
 };

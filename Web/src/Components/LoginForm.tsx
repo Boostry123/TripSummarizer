@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { HiMail, HiLockClosed, HiArrowRight } from 'react-icons/hi';
-import { useNavigate } from 'react-router-dom';
-import { authService } from '@/Apis/authService';
-import { useAuthStore } from '@/store/authStore';
+import { useState } from "react";
+import { HiMail, HiLockClosed, HiArrowRight } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
+import { authService } from "@/Apis/authService";
+import { useAuthStore } from "@/store/authStore";
 
 interface LoginFormProps {
   onToggle: () => void;
@@ -11,9 +11,9 @@ interface LoginFormProps {
 const LoginForm: React.FC<LoginFormProps> = ({ onToggle }) => {
   const navigate = useNavigate();
   const login = useAuthStore((state) => state.login);
-  
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -25,10 +25,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onToggle }) => {
     try {
       const response = await authService.login({ email, password });
       login(response.user, response.token);
-      navigate('/');
+      navigate("/");
     } catch (err: any) {
-      console.error('Login error:', err);
-      setError(err.response?.data?.error || 'Failed to sign in. Please check your credentials.');
+      console.error("Login error:", err);
+      setError(
+        err.response?.data?.error ||
+          "Failed to sign in. Please check your credentials.",
+      );
     } finally {
       setLoading(false);
     }
@@ -38,7 +41,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onToggle }) => {
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
       <div className="text-center">
         <h2 className="text-3xl font-extrabold mb-2">Welcome Back</h2>
-        <p className="text-slate-500 text-sm">Please enter your details to sign in.</p>
+        <p className="text-slate-500 text-sm">
+          Please enter your details to sign in.
+        </p>
       </div>
 
       {error && (
@@ -65,7 +70,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onToggle }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1.5 ml-1">Password</label>
+          <label className="block text-sm font-medium mb-1.5 ml-1">
+            Password
+          </label>
           <div className="relative">
             <HiLockClosed className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg" />
             <input
@@ -88,14 +95,16 @@ const LoginForm: React.FC<LoginFormProps> = ({ onToggle }) => {
           {loading ? (
             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
           ) : (
-            <>Sign In <HiArrowRight /></>
+            <>
+              Sign In <HiArrowRight />
+            </>
           )}
         </button>
       </form>
 
       <div className="text-center pt-2">
         <p className="text-sm text-slate-500">
-          Don't have an account?{' '}
+          Don't have an account?{" "}
           <button
             onClick={onToggle}
             disabled={loading}

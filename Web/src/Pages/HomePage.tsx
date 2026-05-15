@@ -9,25 +9,25 @@ const HomePage = () => {
   const { isAuthenticated } = useAuth();
 
   return (
-    <div className="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans">
+    <div className="bg-soft-bg text-brand-text font-sans">
       {/* Hero Section */}
       <main className={`max-w-7xl mx-auto px-6 ${isMobile ? 'pt-10 pb-20' : 'pt-20 pb-32'} text-center`}>
-        <div className="inline-block px-4 py-1.5 mb-6 text-sm font-medium text-indigo-600 bg-indigo-100 dark:bg-indigo-900/30 dark:text-indigo-400 rounded-full">
+        <div className="inline-block px-4 py-1.5 mb-6 text-sm font-semibold text-brand-text bg-soft-accent rounded-full border border-soft-muted/50">
           AI-Powered Travel Intelligence
         </div>
-        <h2 className={`${isMobile ? 'text-4xl' : 'text-5xl md:text-7xl'} font-extrabold mb-8 tracking-tight leading-tight`}>
-          Your trips, <span className="text-indigo-600">summarized</span>.
+        <h2 className={`${isMobile ? 'text-4xl' : 'text-5xl md:text-7xl'} font-extrabold mb-8 tracking-tight leading-tight text-brand-text`}>
+          Your trips, <span className="text-brand-primary">summarized</span>.
           <br />
-          Your preferences, <span className="text-indigo-600">understood</span>.
+          Your preferences, <span className="text-brand-primary">understood</span>.
         </h2>
-        <p className={`${isMobile ? 'text-base' : 'text-lg md:text-xl'} text-slate-600 dark:text-slate-400 max-w-2xl mx-auto mb-12 leading-relaxed`}>
+        <p className={`${isMobile ? 'text-base' : 'text-lg md:text-xl'} text-brand-text-muted max-w-2xl mx-auto mb-12 leading-relaxed`}>
           Log your adventures, rate your experiences, and let our AI analyze your travel DNA to curate your next perfect journey.
         </p>
         
         <div className={`flex ${isMobile ? 'flex-col' : 'flex-row'} gap-4 justify-center items-center`}>
           <Link 
             to={isAuthenticated ? "/travel-log" : "/auth"} 
-            className={`${isMobile ? 'w-full py-4' : 'w-auto px-8 py-4'} bg-indigo-600 text-white rounded-xl text-lg font-bold hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-500/20 text-center`}
+            className={`${isMobile ? 'w-full py-4' : 'w-auto px-10 py-4'} bg-brand-primary text-white rounded-xl text-lg font-bold hover:bg-brand-text transition-all shadow-xl shadow-soft-deep/30 text-center`}
           >
             {isAuthenticated ? "Go to Travel Log" : "Start Your Travel Log"}
           </Link>
@@ -39,28 +39,25 @@ const HomePage = () => {
             {
               title: "Seamless Logging",
               desc: "Quickly capture activities, ratings, and thoughts from your latest journey.",
-              color: "blue",
               icon: <HiLightningBolt />
             },
             {
               title: "AI Analysis",
               desc: "Our AI traverses your history to map your likes and dislikes with precision.",
-              color: "purple",
               icon: <HiChip />
             },
             {
               title: "Pinpoint Recs",
               desc: "Get suggestions for your next trip that you're guaranteed to love.",
-              color: "green",
               icon: <HiMap />
             }
           ].map((feature, idx) => (
-            <Card key={idx} hoverable>
-              <div className={`w-12 h-12 bg-${feature.color}-100 dark:bg-${feature.color}-900/30 text-${feature.color}-600 dark:text-${feature.color}-400 rounded-lg flex items-center justify-center mb-6 mx-auto text-2xl`}>
+            <Card key={idx} hoverable className="border-soft-muted/20">
+              <div className="w-14 h-14 bg-soft-accent text-brand-primary rounded-xl flex items-center justify-center mb-6 mx-auto text-2xl border border-soft-muted/20 shadow-sm">
                 {feature.icon}
               </div>
-              <h3 className="text-xl font-bold mb-3">{feature.title}</h3>
-              <p className="text-slate-600 dark:text-slate-400">{feature.desc}</p>
+              <h3 className="text-xl font-bold mb-3 text-brand-text">{feature.title}</h3>
+              <p className="text-brand-text-muted font-medium">{feature.desc}</p>
             </Card>
           ))}
         </div>

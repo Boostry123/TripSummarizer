@@ -1,7 +1,7 @@
-import { Response } from 'express';
-import * as tripService from '@/Service/tripService.js';
-import { AuthRequest } from '@/Middleware/auth.js';
-import { ValidatedTrip, ValidatedTripUpdate } from '@/Types/validation.js';
+import { Response } from "express";
+import * as tripService from "@/Service/tripService.js";
+import { AuthRequest } from "@/Middleware/auth.js";
+import { ValidatedTrip, ValidatedTripUpdate } from "@/Types/validation.js";
 
 /**
  * Trip Controller
@@ -11,7 +11,8 @@ import { ValidatedTrip, ValidatedTripUpdate } from '@/Types/validation.js';
 const handleError = (res: Response, error: unknown, context: string) => {
   console.error(`${context} error:`, error);
   const status = (error as { status?: number })?.status || 500;
-  const message = (error as { message?: string })?.message || 'Internal server error';
+  const message =
+    (error as { message?: string })?.message || "Internal server error";
   res.status(status).json({ error: message });
 };
 
@@ -22,7 +23,7 @@ export const createTrip = async (req: AuthRequest, res: Response) => {
     const token = req.token;
 
     if (!userId || !token) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return res.status(401).json({ error: "Unauthorized" });
     }
 
     const newTrip = await tripService.createTrip(token, {
@@ -32,7 +33,7 @@ export const createTrip = async (req: AuthRequest, res: Response) => {
 
     res.status(201).json(newTrip);
   } catch (error: unknown) {
-    handleError(res, error, 'CreateTrip');
+    handleError(res, error, "CreateTrip");
   }
 };
 
@@ -42,13 +43,13 @@ export const getTrips = async (req: AuthRequest, res: Response) => {
     const token = req.token;
 
     if (!userId || !token) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return res.status(401).json({ error: "Unauthorized" });
     }
 
     const trips = await tripService.getTrips(token, userId);
     res.status(200).json(trips);
   } catch (error: unknown) {
-    handleError(res, error, 'GetTrips');
+    handleError(res, error, "GetTrips");
   }
 };
 
@@ -58,13 +59,13 @@ export const getTripById = async (req: AuthRequest, res: Response) => {
     const token = req.token;
 
     if (!req.user || !token) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return res.status(401).json({ error: "Unauthorized" });
     }
 
     const trip = await tripService.getTripById(token, id);
     res.status(200).json(trip);
   } catch (error: unknown) {
-    handleError(res, error, 'GetTripById');
+    handleError(res, error, "GetTripById");
   }
 };
 
@@ -75,13 +76,13 @@ export const updateTrip = async (req: AuthRequest, res: Response) => {
     const token = req.token;
 
     if (!req.user || !token) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return res.status(401).json({ error: "Unauthorized" });
     }
 
     const updatedTrip = await tripService.updateTrip(token, id, tripData);
     res.status(200).json(updatedTrip);
   } catch (error: unknown) {
-    handleError(res, error, 'UpdateTrip');
+    handleError(res, error, "UpdateTrip");
   }
 };
 
@@ -91,12 +92,12 @@ export const deleteTrip = async (req: AuthRequest, res: Response) => {
     const token = req.token;
 
     if (!req.user || !token) {
-      return res.status(401).json({ error: 'Unauthorized' });
+      return res.status(401).json({ error: "Unauthorized" });
     }
 
     await tripService.deleteTrip(token, id);
     res.status(204).send();
   } catch (error: unknown) {
-    handleError(res, error, 'DeleteTrip');
+    handleError(res, error, "DeleteTrip");
   }
 };

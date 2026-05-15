@@ -100,14 +100,19 @@ const TripEntryForm = (props: entryProps) => {
       onClose();
     } catch (err: any) {
       console.error("Failed to save trip:", err);
-      setError(err.response?.data?.message || "Failed to save trip. Please try again.");
+      setError(
+        err.response?.data?.message || "Failed to save trip. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <Card className="max-w-2xl mx-auto relative" padding={isMobile ? "small" : "medium"}>
+    <Card
+      className="max-w-2xl mx-auto relative"
+      padding={isMobile ? "small" : "medium"}
+    >
       {/* Close Button */}
       <button
         onClick={onClose}
@@ -150,7 +155,7 @@ const TripEntryForm = (props: entryProps) => {
                 }
               />
             </div>
-            
+
             <div>
               <label className="block text-sm font-medium mb-2">Cities</label>
               <div className="flex gap-2 mb-2">
@@ -176,7 +181,10 @@ const TripEntryForm = (props: entryProps) => {
                     className="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 border border-indigo-100 dark:border-indigo-800/30"
                   >
                     {item}
-                    <button onClick={() => removeCity(i)} className="hover:text-indigo-900 dark:hover:text-indigo-200">
+                    <button
+                      onClick={() => removeCity(i)}
+                      className="hover:text-indigo-900 dark:hover:text-indigo-200"
+                    >
                       <HiX />
                     </button>
                   </span>
@@ -185,7 +193,9 @@ const TripEntryForm = (props: entryProps) => {
             </div>
 
             <div>
-              <label className="block text-sm font-medium mb-2">Travel Date</label>
+              <label className="block text-sm font-medium mb-2">
+                Travel Date
+              </label>
               <input
                 type="date"
                 className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
@@ -196,9 +206,13 @@ const TripEntryForm = (props: entryProps) => {
               />
             </div>
           </div>
-          
+
           <button
-            disabled={!formData.country || formData.city.length === 0 || !formData.travel_date}
+            disabled={
+              !formData.country ||
+              formData.city.length === 0 ||
+              !formData.travel_date
+            }
             onClick={nextStep}
             className="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all disabled:opacity-50 flex items-center justify-center text-xl"
           >

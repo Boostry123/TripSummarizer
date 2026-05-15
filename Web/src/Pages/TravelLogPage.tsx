@@ -79,20 +79,22 @@ const TravelLogPage = () => {
 
           {!isLoading && trips?.length === 0 && (
             <div className="col-span-full text-center py-20 bg-white dark:bg-slate-800 rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-700">
-              <p className="text-slate-500">No trips logged yet. Start your journey!</p>
+              <p className="text-slate-500">
+                No trips logged yet. Start your journey!
+              </p>
             </div>
           )}
 
           {trips?.map((trip) => (
-            <Card 
-              key={trip.id} 
+            <Card
+              key={trip.id}
               className="group hover:shadow-xl transition-all cursor-pointer relative overflow-hidden active:scale-[0.98]"
               onClick={() => setSelectedTrip(trip)}
             >
               <div className="flex justify-between items-start mb-4">
                 <div className="pr-8">
                   <h3 className="text-xl font-bold flex items-center gap-2">
-                    <HiLocationMarker className="text-indigo-500 flex-shrink-0" />
+                    <HiLocationMarker className="text-indigo-500 shrink-0" />
                     <span className="truncate">{trip.country}</span>
                   </h3>
                   <div className="flex flex-wrap items-center gap-1.5 mt-1">
@@ -110,7 +112,7 @@ const TravelLogPage = () => {
                     {new Date(trip.travel_date).toLocaleDateString()}
                   </p>
                 </div>
-                <div className="flex items-center bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded text-amber-600 font-bold flex-shrink-0">
+                <div className="flex items-center bg-amber-50 dark:bg-amber-900/20 px-2 py-1 rounded text-amber-600 font-bold shrink-0">
                   <HiStar className="mr-1" />
                   {trip.rating}
                 </div>
@@ -124,12 +126,17 @@ const TravelLogPage = () => {
 
               <div className="flex flex-wrap gap-2 mb-4">
                 {trip.likes.slice(0, 3).map((like, i) => (
-                  <span key={i} className="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 text-xs px-2 py-1 rounded-full border border-emerald-100 dark:border-emerald-800/30">
+                  <span
+                    key={i}
+                    className="bg-emerald-50 dark:bg-emerald-900/20 text-emerald-600 text-xs px-2 py-1 rounded-full border border-emerald-100 dark:border-emerald-800/30"
+                  >
                     {like}
                   </span>
                 ))}
                 {trip.likes.length > 3 && (
-                  <span className="text-slate-400 text-xs py-1">+{trip.likes.length - 3} more</span>
+                  <span className="text-slate-400 text-xs py-1">
+                    +{trip.likes.length - 3} more
+                  </span>
                 )}
               </div>
 
@@ -140,32 +147,30 @@ const TravelLogPage = () => {
               >
                 <HiTrash />
               </button>
-              </Card>
-              ))}
-              </div>
+            </Card>
+          ))}
+        </div>
 
-              {/* Modals */}
-              {newLogOpen && (
-              <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 overflow-y-auto">
-              <div className="w-full max-w-2xl my-auto">
-              <TripEntryForm 
-                onClose={() => setNewLogOpen(false)} 
-              />
-              </div>
-              </div>
-              )}
+        {/* Modals */}
+        {newLogOpen && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-slate-900/50 backdrop-blur-sm p-4 overflow-y-auto">
+            <div className="w-full max-w-2xl my-auto">
+              <TripEntryForm onClose={() => setNewLogOpen(false)} />
+            </div>
+          </div>
+        )}
 
-              {selectedTrip && (
-              <TripDetailsModal
-              trip={selectedTrip}
-              onClose={() => setSelectedTrip(null)}
-              onSave={handleSaveTrip}
-              onDelete={(id) => {
+        {selectedTrip && (
+          <TripDetailsModal
+            trip={selectedTrip}
+            onClose={() => setSelectedTrip(null)}
+            onSave={handleSaveTrip}
+            onDelete={(id) => {
               const e = { stopPropagation: () => {} } as React.MouseEvent;
               handleDelete(e, id);
-              }}
-              />
-              )}
+            }}
+          />
+        )}
       </main>
     </div>
   );

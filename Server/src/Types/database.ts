@@ -69,10 +69,10 @@ export interface Database {
 }
 
 // Helper types for easier consumption in services/controllers
-export type Profile = Database['public']['Tables']['profiles']['Row'];
-export type ProfileInsert = Database['public']['Tables']['profiles']['Insert'];
-export type ProfileUpdate = Database['public']['Tables']['profiles']['Update'];
+export type Profile = Database["public"]["Tables"]["profiles"]["Row"];
+export type ProfileInsert = Database["public"]["Tables"]["profiles"]["Insert"];
+export type ProfileUpdate = Database["public"]["Tables"]["profiles"]["Update"];
 
-export type Trip = Database['public']['Tables']['trips']['Row'];
-export type TripInsert = Database['public']['Tables']['trips']['Insert'];
-export type TripUpdate = Database['public']['Tables']['trips']['Update'];
+export type Trip = Database["public"]["Tables"]["trips"]["Row"];
+export type TripInsert = Database["public"]["Tables"]["trips"]["Insert"];
+export type TripUpdate = Database["public"]["Tables"]["trips"]["Update"];

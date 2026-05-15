@@ -8,7 +8,7 @@ const Navbar = () => {
   const isMobile = useMobile();
   const navigate = useNavigate();
   const [isOpen, setIsOpen] = useState(false);
-  
+
   const { user, signout, isAuthenticated } = useAuth();
 
   const navLinks = [
@@ -21,13 +21,17 @@ const Navbar = () => {
   const handleSignout = () => {
     signout();
     closeMenu();
-    navigate('/');
+    navigate("/");
   };
 
   return (
     <nav className="bg-white/80 dark:bg-slate-900/80 backdrop-blur-md sticky top-0 z-50 border-b border-slate-100 dark:border-slate-800">
       <div className="max-w-7xl mx-auto px-6 py-4 flex justify-between items-center">
-        <Link to="/" className="text-xl font-bold tracking-tight text-indigo-600 dark:text-indigo-400" onClick={closeMenu}>
+        <Link
+          to="/"
+          className="text-xl font-bold tracking-tight text-indigo-600 dark:text-indigo-400"
+          onClick={closeMenu}
+        >
           TripSummarizer
         </Link>
 
@@ -43,12 +47,12 @@ const Navbar = () => {
                 {link.name}
               </Link>
             ))}
-            
+
             {isAuthenticated ? (
               <div className="flex items-center gap-4 pl-4 border-l border-slate-200 dark:border-slate-700">
                 <div className="flex items-center gap-2 text-sm font-semibold text-slate-700 dark:text-slate-200">
                   <HiUserCircle className="text-xl text-indigo-500" />
-                  {user?.name || 'User'}
+                  {user?.name || "User"}
                 </div>
                 <button
                   onClick={handleSignout}
@@ -92,13 +96,13 @@ const Navbar = () => {
               {link.name}
             </Link>
           ))}
-          
+
           <div className="pt-4 border-t border-slate-100 dark:border-slate-800">
             {isAuthenticated ? (
               <div className="space-y-4">
                 <div className="flex items-center gap-2 text-base font-semibold text-slate-700 dark:text-slate-200">
                   <HiUserCircle className="text-2xl text-indigo-500" />
-                  {user?.name || 'User'}
+                  {user?.name || "User"}
                 </div>
                 <button
                   onClick={handleSignout}

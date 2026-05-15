@@ -1,4 +1,4 @@
-import { z } from 'zod';
+import { z } from "zod";
 
 /**
  * Auth Validation Schemas
@@ -20,7 +20,12 @@ export const SignupSchema = z.object({
 export const ProfileSchema = z.object({
   id: z.string().uuid({ message: "Invalid user ID format" }),
   email: z.string().email({ message: "Invalid email address" }),
-  name: z.string().min(2, "Name must be at least 2 characters").max(100).nullable().optional(),
+  name: z
+    .string()
+    .min(2, "Name must be at least 2 characters")
+    .max(100)
+    .nullable()
+    .optional(),
 });
 
 /**
@@ -28,23 +33,33 @@ export const ProfileSchema = z.object({
  * Matches the 'trips' table structure and TripData interface
  */
 export const TripSchema = z.object({
-  country: z.string()
+  country: z
+    .string()
     .min(1, "Country is required")
     .max(100, "Country name too long"),
-  city: z.array(z.string().min(1).max(100))
+  city: z
+    .array(z.string().min(1).max(100))
     .min(1, "At least one city is required"),
-  travel_date: z.string()
+  travel_date: z
+    .string()
     .datetime({ message: "Invalid date format. Expected ISO 8601" })
-    .or(z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format. Expected YYYY-MM-DD")),
-  rating: z.number()
+    .or(
+      z
+        .string()
+        .regex(
+          /^\d{4}-\d{2}-\d{2}$/,
+          "Invalid date format. Expected YYYY-MM-DD",
+        ),
+    ),
+  rating: z
+    .number()
     .int()
     .min(1, "Rating must be at least 1")
     .max(5, "Rating cannot exceed 5"),
-  likes: z.array(z.string().max(200))
-    .default([]),
-  hates: z.array(z.string().max(200))
-    .default([]),
-  free_text: z.string()
+  likes: z.array(z.string().max(200)).default([]),
+  hates: z.array(z.string().max(200)).default([]),
+  free_text: z
+    .string()
     .max(5000, "Story is too long (max 5000 characters)")
     .nullable()
     .optional(),
@@ -54,7 +69,10 @@ export const TripSchema = z.object({
  * Partial schemas for updates
  */
 export const TripUpdateSchema = TripSchema.partial();
-export const ProfileUpdateSchema = ProfileSchema.partial().omit({ id: true, email: true });
+export const ProfileUpdateSchema = ProfileSchema.partial().omit({
+  id: true,
+  email: true,
+});
 
 // Types inferred from schemas
 export type ValidatedTrip = z.infer<typeof TripSchema>;

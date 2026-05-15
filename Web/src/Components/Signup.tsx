@@ -1,8 +1,8 @@
-import { useState } from 'react';
-import { HiMail, HiLockClosed, HiUser, HiArrowRight } from 'react-icons/hi';
-import { useNavigate } from 'react-router-dom';
-import { authService } from '@/Apis/authService';
-import { useAuthStore } from '@/store/authStore';
+import { useState } from "react";
+import { HiMail, HiLockClosed, HiUser, HiArrowRight } from "react-icons/hi";
+import { useNavigate } from "react-router-dom";
+import { authService } from "@/Apis/authService";
+import { useAuthStore } from "@/store/authStore";
 
 interface SignupProps {
   onToggle: () => void;
@@ -11,10 +11,10 @@ interface SignupProps {
 const Signup: React.FC<SignupProps> = ({ onToggle }) => {
   const navigate = useNavigate();
   const signupStore = useAuthStore((state) => state.signup);
-  
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
+
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
@@ -26,10 +26,13 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
     try {
       const response = await authService.signup({ name, email, password });
       signupStore(response.user, response.token);
-      navigate('/');
+      navigate("/");
     } catch (err: any) {
-      console.error('Signup error:', err);
-      setError(err.response?.data?.error || 'Failed to create account. Please try again.');
+      console.error("Signup error:", err);
+      setError(
+        err.response?.data?.error ||
+          "Failed to create account. Please try again.",
+      );
     } finally {
       setLoading(false);
     }
@@ -39,7 +42,9 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
     <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
       <div className="text-center">
         <h2 className="text-3xl font-extrabold mb-2">Create Account</h2>
-        <p className="text-slate-500 text-sm">Join TripSummarizer to start your travel log.</p>
+        <p className="text-slate-500 text-sm">
+          Join TripSummarizer to start your travel log.
+        </p>
       </div>
 
       {error && (
@@ -50,7 +55,9 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium mb-1.5 ml-1">Full Name</label>
+          <label className="block text-sm font-medium mb-1.5 ml-1">
+            Full Name
+          </label>
           <div className="relative">
             <HiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg" />
             <input
@@ -82,7 +89,9 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1.5 ml-1">Password</label>
+          <label className="block text-sm font-medium mb-1.5 ml-1">
+            Password
+          </label>
           <div className="relative">
             <HiLockClosed className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg" />
             <input
@@ -105,14 +114,16 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
           {loading ? (
             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
           ) : (
-            <>Create Account <HiArrowRight /></>
+            <>
+              Create Account <HiArrowRight />
+            </>
           )}
         </button>
       </form>
 
       <div className="text-center pt-2">
         <p className="text-sm text-slate-500">
-          Already have an account?{' '}
+          Already have an account?{" "}
           <button
             onClick={onToggle}
             disabled={loading}

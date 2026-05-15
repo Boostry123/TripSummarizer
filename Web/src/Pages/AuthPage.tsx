@@ -20,7 +20,7 @@ const AuthPage = () => {
 
   return (
     <div className="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans flex flex-col min-h-[calc(100vh-64px)]">
-      <main className="flex grow items-center justify-center p-6 pb-20 mt-10 md:mt-0">
+      <main className="grow items-center justify-center p-6 pb-20 mt-10 md:mt-0">
         <Card
           className="w-full max-w-md"
           padding={isMobile ? "small" : "medium"}

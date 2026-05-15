@@ -1,5 +1,10 @@
 import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
-import { getTrips, createTrip, deleteTrip, updateTrip } from "@/Apis/tripService";
+import {
+  getTrips,
+  createTrip,
+  deleteTrip,
+  updateTrip,
+} from "@/Apis/tripService";
 import { TripData, TripUpdate } from "@/Types/trip";
 
 /**

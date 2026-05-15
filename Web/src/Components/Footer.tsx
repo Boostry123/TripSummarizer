@@ -7,8 +7,12 @@ const Footer = () => {
     <footer className="bg-white dark:bg-slate-900 border-t border-slate-100 dark:border-slate-800 py-12">
       <div className="max-w-7xl mx-auto px-6 flex flex-col md:flex-row justify-between items-center gap-8">
         <div>
-          <h2 className="text-xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">TripSummarizer</h2>
-          <p className="text-slate-500 text-sm italic">Summarizing your world, one trip at a time.</p>
+          <h2 className="text-xl font-bold text-indigo-600 dark:text-indigo-400 mb-2">
+            TripSummarizer
+          </h2>
+          <p className="text-slate-500 text-sm italic">
+            Summarizing your world, one trip at a time.
+          </p>
         </div>
 
         <div className="flex gap-6 text-2xl text-slate-400 dark:text-slate-500">
