@@ -31,7 +31,7 @@ export interface Database {
           id: string; // uuid
           user_id: string; // uuid
           country: string;
-          city: string;
+          city: string[];
           travel_date: string; // ISO date string
           rating: number; // smallint (1-5)
           likes: string[]; // text[]
@@ -43,7 +43,7 @@ export interface Database {
           id?: string;
           user_id: string;
           country: string;
-          city: string;
+          city: string[];
           travel_date: string;
           rating: number;
           likes?: string[];
@@ -55,7 +55,7 @@ export interface Database {
           id?: string;
           user_id?: string;
           country?: string;
-          city?: string;
+          city?: string[];
           travel_date?: string;
           rating?: number;
           likes?: string[];

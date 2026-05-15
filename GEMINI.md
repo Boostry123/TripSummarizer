@@ -45,7 +45,7 @@ Stores user travel logs.
 - `id`: `uuid` (Primary Key, Default: `gen_random_uuid()`)
 - `user_id`: `uuid` (Foreign Key, references `public.profiles.id`)
 - `country`: `text` (Non-nullable)
-- `city`: `text` (Non-nullable)
+- `city`: `text[]` (Non-nullable)
 - `travel_date`: `date` (Non-nullable)
 - `rating`: `smallint` (Non-nullable, Constraint: 1-5)
 - `likes`: `text[]` (Default: `[]`)
@@ -61,7 +61,8 @@ Stores user travel logs.
 - **Stateless Server Strategy**:
   - The server client uses `SUPABASE_ANON_KEY` to ensure RLS compliance.
   - `persistSession` and `autoRefreshToken` are disabled.
-  - Every request requiring DB access MUST pass the user's JWT from the `Authorization` header to `supabase.auth.setSession()`.
+  - Every request requiring DB access MUST pass the user's JWT from the `Authorization` header.
+  - The service layer instantiates a request-scoped Supabase client using `getSupabaseClient(token)` from `Db.ts` to perform operations under the user's identity, ensuring RLS enforcement.
 - **Client-side Auth Persistence**:
   - **Strict Storage**: The JWT is stored in `localStorage` under the key `Token` with the format `Bearer <JWT>`.
   - **Memory-only User State**: The user profile object is kept in the Zustand store memory and NOT persisted to `localStorage` for security and freshness.
@@ -73,8 +74,7 @@ Stores user travel logs.
 3. [x] Trip Entry System (Multi-stage `TravelLogPage`)
 4. [x] Authentication UI (Login & Signup components, `AuthPage`)
 5. [x] Database Schema & Server-side Validation (Supabase + Zod)
-6. [x] API Implementation (Routes & Controllers for Auth)
-7. [x] Frontend Integration (Connecting Web to Server for Auth)
-8. [ ] API Implementation (Trips & Profiles)
-9. [ ] Frontend Integration (Trip Logging & Profile Management)
-10. [ ] AI Context Integration & Recommendation Engine
+6. [x] API Implementation (Routes & Controllers for Auth, Trips & Profiles)
+7. [x] Frontend Integration (Connecting Web to Server for Auth, Trip Logging & Profile Management)
+8. [ ] AI Context Integration & Recommendation Engine
+9. [ ] Polish & Visual Refining

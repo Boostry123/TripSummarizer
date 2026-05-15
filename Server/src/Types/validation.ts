@@ -31,9 +31,8 @@ export const TripSchema = z.object({
   country: z.string()
     .min(1, "Country is required")
     .max(100, "Country name too long"),
-  city: z.string()
-    .min(1, "City is required")
-    .max(100, "City name too long"),
+  city: z.array(z.string().min(1).max(100))
+    .min(1, "At least one city is required"),
   travel_date: z.string()
     .datetime({ message: "Invalid date format. Expected ISO 8601" })
     .or(z.string().regex(/^\d{4}-\d{2}-\d{2}$/, "Invalid date format. Expected YYYY-MM-DD")),
@@ -59,4 +58,5 @@ export const ProfileUpdateSchema = ProfileSchema.partial().omit({ id: true, emai
 
 // Types inferred from schemas
 export type ValidatedTrip = z.infer<typeof TripSchema>;
+export type ValidatedTripUpdate = z.infer<typeof TripUpdateSchema>;
 export type ValidatedProfile = z.infer<typeof ProfileSchema>;

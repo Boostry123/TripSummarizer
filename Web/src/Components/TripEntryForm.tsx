@@ -2,6 +2,7 @@ import { useState } from "react";
 import { TripData } from "@/Types/trip";
 import { useMobile } from "@/hooks/useMobile";
 import Card from "@/Components/Card";
+import { useTrips } from "@/hooks/useTrips";
 import {
   HiArrowRight,
   HiArrowLeft,
@@ -19,20 +20,43 @@ const TripEntryForm = (props: entryProps) => {
   const { onClose } = props;
   const isMobile = useMobile();
   const [step, setStep] = useState(1);
+  const { createTrip } = useTrips();
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
+
   const [formData, setFormData] = useState<TripData>({
     country: "",
-    city: "",
+    city: [],
+    travel_date: new Date().toISOString().split("T")[0],
     rating: 0,
     likes: [],
     hates: [],
-    freeText: "",
+    free_text: "",
   });
 
+  const [currentCity, setCurrentCity] = useState("");
   const [currentLike, setCurrentLike] = useState("");
   const [currentHate, setCurrentHate] = useState("");
 
   const nextStep = () => setStep((s) => s + 1);
   const prevStep = () => setStep((s) => s - 1);
+
+  const addCity = () => {
+    if (currentCity.trim()) {
+      setFormData({
+        ...formData,
+        city: [...formData.city, currentCity.trim()],
+      });
+      setCurrentCity("");
+    }
+  };
+
+  const removeCity = (index: number) => {
+    setFormData({
+      ...formData,
+      city: formData.city.filter((_, i) => i !== index),
+    });
+  };
 
   const addLike = () => {
     if (currentLike.trim()) {
@@ -68,6 +92,20 @@ const TripEntryForm = (props: entryProps) => {
     });
   };
 
+  const handleSave = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      await createTrip(formData);
+      onClose();
+    } catch (err: any) {
+      console.error("Failed to save trip:", err);
+      setError(err.response?.data?.message || "Failed to save trip. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <Card className="max-w-2xl mx-auto relative" padding={isMobile ? "small" : "medium"}>
       {/* Close Button */}
@@ -87,38 +125,80 @@ const TripEntryForm = (props: entryProps) => {
         ></div>
       </div>
 
-      {/* Step 1: Location */}
+      {error && (
+        <div className="mb-4 p-3 bg-rose-100 text-rose-700 rounded-lg text-sm">
+          {error}
+        </div>
+      )}
+
+      {/* Step 1: Location & Date */}
       {step === 1 && (
         <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
           <h3 className={`${isMobile ? "text-xl" : "text-2xl"} font-bold`}>
-            Where did you go?
+            Where and when?
           </h3>
-          <div>
-            <label className="block text-sm font-medium mb-2">Country</label>
-            <input
-              type="text"
-              className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
-              placeholder="e.g. Japan"
-              value={formData.country}
-              onChange={(e) =>
-                setFormData({ ...formData, country: e.target.value })
-              }
-            />
+          <div className="space-y-4">
+            <div>
+              <label className="block text-sm font-medium mb-2">Country</label>
+              <input
+                type="text"
+                className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                placeholder="e.g. Japan"
+                value={formData.country}
+                onChange={(e) =>
+                  setFormData({ ...formData, country: e.target.value })
+                }
+              />
+            </div>
+            
+            <div>
+              <label className="block text-sm font-medium mb-2">Cities</label>
+              <div className="flex gap-2 mb-2">
+                <input
+                  type="text"
+                  className="flex-1 p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                  placeholder="e.g. Tokyo"
+                  value={currentCity}
+                  onChange={(e) => setCurrentCity(e.target.value)}
+                  onKeyPress={(e) => e.key === "Enter" && addCity()}
+                />
+                <button
+                  onClick={addCity}
+                  className="bg-indigo-600 text-white px-4 rounded-xl hover:bg-indigo-700 transition-all flex items-center justify-center"
+                >
+                  <HiPlus />
+                </button>
+              </div>
+              <div className="flex flex-wrap gap-2">
+                {formData.city.map((item, i) => (
+                  <span
+                    key={i}
+                    className="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 border border-indigo-100 dark:border-indigo-800/30"
+                  >
+                    {item}
+                    <button onClick={() => removeCity(i)} className="hover:text-indigo-900 dark:hover:text-indigo-200">
+                      <HiX />
+                    </button>
+                  </span>
+                ))}
+              </div>
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Travel Date</label>
+              <input
+                type="date"
+                className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                value={formData.travel_date}
+                onChange={(e) =>
+                  setFormData({ ...formData, travel_date: e.target.value })
+                }
+              />
+            </div>
           </div>
-          <div>
-            <label className="block text-sm font-medium mb-2">City</label>
-            <input
-              type="text"
-              className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
-              placeholder="e.g. Tokyo"
-              value={formData.city}
-              onChange={(e) =>
-                setFormData({ ...formData, city: e.target.value })
-              }
-            />
-          </div>
+          
           <button
-            disabled={!formData.country || !formData.city}
+            disabled={!formData.country || formData.city.length === 0 || !formData.travel_date}
             onClick={nextStep}
             className="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all disabled:opacity-50 flex items-center justify-center text-xl"
           >
@@ -281,9 +361,9 @@ const TripEntryForm = (props: entryProps) => {
           <textarea
             className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all min-h-37.5"
             placeholder="Write your story here..."
-            value={formData.freeText}
+            value={formData.free_text}
             onChange={(e) =>
-              setFormData({ ...formData, freeText: e.target.value })
+              setFormData({ ...formData, free_text: e.target.value })
             }
           />
           <div className="flex gap-4">
@@ -294,14 +374,17 @@ const TripEntryForm = (props: entryProps) => {
               <HiArrowLeft />
             </button>
             <button
-              onClick={() => {
-                console.log("Final Data:", formData);
-                alert("Trip Saved (check console)");
-                onClose();
-              }}
+              disabled={loading}
+              onClick={handleSave}
               className="flex-1 bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-500/20 flex items-center justify-center gap-2"
             >
-              <HiCheck className="text-xl" /> Save
+              {loading ? (
+                <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>
+              ) : (
+                <>
+                  <HiCheck className="text-xl" /> Save
+                </>
+              )}
             </button>
           </div>
         </div>

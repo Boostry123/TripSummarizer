@@ -62,11 +62,11 @@ export const logout = async (req: Request, res: Response) => {
 
 export const getCurrentUser = async (req: AuthRequest, res: Response) => {
   try {
-    if (!req.user) {
+    if (!req.user || !req.token) {
       return res.status(401).json({ error: 'Not authenticated' });
     }
 
-    const result = await authService.getCurrentUser(req.user.id);
+    const result = await authService.getCurrentUser(req.token, req.user.id);
 
     if (result.error) {
       return res.status(result.error.status).json({ error: result.error.message });

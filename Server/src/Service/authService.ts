@@ -1,4 +1,4 @@
-import { supabase } from '@/Config/Db.js';
+import { getSupabaseClient, default as supabase } from '@/Config/Db.js';
 import { LoginCredentials, RegisterCredentials, AuthServiceResponse } from '@/Types/auth.js';
 import { Profile } from '@/Types/database.js';
 
@@ -57,8 +57,9 @@ export const logout = async (): Promise<{ error?: { status: number; message: str
   return {};
 };
 
-export const getCurrentUser = async (userId: string): Promise<AuthServiceResponse> => {
-  const { data, error } = await supabase
+export const getCurrentUser = async (token: string, userId: string): Promise<AuthServiceResponse> => {
+  const supabaseAuthenticated = getSupabaseClient(token);
+  const { data, error } = await supabaseAuthenticated
     .from('profiles')
     .select('*')
     .eq('id', userId)
