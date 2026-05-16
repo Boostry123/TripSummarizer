@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useMobile } from "@/hooks/useMobile";
-import BaseEntryForm from "@/Components/BaseEntryForm";
+import BaseEntryForm from "@/Components/Common/BaseEntryForm";
 //Icons
 import { HiArrowRight, HiArrowLeft, HiCheck } from "react-icons/hi";
 

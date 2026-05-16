@@ -2,7 +2,7 @@ import { useState } from "react";
 import { TripData } from "@/Types/trip";
 import { useMobile } from "@/hooks/useMobile";
 import { useTrips } from "@/hooks/useTrips";
-import BaseEntryForm from "@/Components/BaseEntryForm";
+import BaseEntryForm from "@/Components/Common/BaseEntryForm";
 import {
   HiArrowRight,
   HiArrowLeft,

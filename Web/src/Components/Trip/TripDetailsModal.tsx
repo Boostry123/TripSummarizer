@@ -10,7 +10,7 @@ import {
   HiPlus,
   HiTrash,
 } from "react-icons/hi";
-import Card from "@/Components/Card";
+import Card from "@/Components/Common/Card";
 
 interface TripDetailsModalProps {
   trip: Trip;

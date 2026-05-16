@@ -1,6 +1,6 @@
 import { Link, Navigate } from "react-router-dom";
 import { useMobile } from "@/hooks/useMobile";
-import Card from "@/Components/Card";
+import Card from "@/Components/Common/Card";
 import { HiLightningBolt, HiChip, HiMap } from "react-icons/hi";
 import { useAuth } from "@/hooks/useAuth";
 

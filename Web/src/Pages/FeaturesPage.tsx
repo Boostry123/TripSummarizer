@@ -1,5 +1,5 @@
 import { useMobile } from "@/hooks/useMobile";
-import Card from "@/Components/Card";
+import Card from "@/Components/Common/Card";
 import {
   HiPencilAlt,
   HiStar,

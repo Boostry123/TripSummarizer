@@ -1,8 +1,8 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import Card from "@/Components/Card";
-import LoginForm from "@/Components/LoginForm";
-import Signup from "@/Components/Signup";
+import Card from "@/Components/Common/Card";
+import LoginForm from "@/Components/Auth/LoginForm";
+import Signup from "@/Components/Auth/Signup";
 import { useMobile } from "@/hooks/useMobile";
 import { useAuthStore } from "@/store/authStore";
 

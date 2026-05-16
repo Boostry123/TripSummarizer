@@ -31,7 +31,11 @@ TripSummarizer is a web application designed to capture and synthesize travel ex
 ### Web (`/Web`)
 
 - `src/Apis`: Services for backend communication.
-- `src/Components`: Reusable UI elements.
+- `src/Components`: Organized UI elements:
+    - `Auth/`: Authentication forms (Login, Signup).
+    - `Common/`: Reusable base components (Card, BaseEntryForm).
+    - `Layout/`: Structural components (Navbar, Footer, Layout).
+    - `Trip/`: Trip-specific UI (Forms, Modals).
 - `src/Pages`: Top-level route components.
 - `src/hooks`: Custom React hooks.
 - `src/Helper`: Utility functions.

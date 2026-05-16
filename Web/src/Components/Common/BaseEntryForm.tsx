@@ -1,5 +1,5 @@
 import React from "react";
-import Card from "@/Components/Card";
+import Card from "@/Components/Common/Card";
 import { useMobile } from "@/hooks/useMobile";
 import { useSteps } from "@/hooks/useSteps";
 import { HiX } from "react-icons/hi";

@@ -1,7 +1,7 @@
 import { useState } from "react";
-import TripEntryForm from "@/Components/TripEntryForm";
-import NewTripEntryForm from "@/Components/NewTripEntryForm";
-import TripDetailsModal from "@/Components/TripDetailsModal";
+import TripEntryForm from "@/Components/Trip/TripEntryForm";
+import NewTripEntryForm from "@/Components/Trip/NewTripEntryForm";
+import TripDetailsModal from "@/Components/Trip/TripDetailsModal";
 import { useMobile } from "@/hooks/useMobile";
 import { useTrips } from "@/hooks/useTrips";
 import {
@@ -13,7 +13,7 @@ import {
   HiSparkles,
 } from "react-icons/hi";
 import { Trip, TripUpdate } from "@/Types/trip";
-import Card from "@/Components/Card";
+import Card from "@/Components/Common/Card";
 
 const TravelLogPage = () => {
   const isMobile = useMobile();

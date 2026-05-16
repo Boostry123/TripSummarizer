@@ -11,7 +11,7 @@ import TravelLogPage from "@/Pages/TravelLogPage";
 import FeaturesPage from "@/Pages/FeaturesPage";
 import AboutPage from "@/Pages/AboutPage";
 import AuthPage from "@/Pages/AuthPage";
-import Layout from "@/Components/Layout";
+import Layout from "@/Components/Layout/Layout";
 import { useAuth } from "@/hooks/useAuth";
 
 const queryClient = new QueryClient({
