@@ -24,6 +24,7 @@ export const signup = async (
       message: "Signup successful",
       user: result.user,
       token: result.token,
+      refreshToken: result.refreshToken,
     });
   } catch (error: unknown) {
     console.error("Signup controller error:", error);
@@ -48,10 +49,39 @@ export const login = async (
       message: "Login successful",
       user: result.user,
       token: result.token,
+      refreshToken: result.refreshToken,
     });
   } catch (error: unknown) {
     console.error("Login controller error:", error);
     res.status(500).json({ error: "Internal server error during login" });
+  }
+};
+
+export const refresh = async (req: Request, res: Response) => {
+  try {
+    const { refreshToken } = req.body;
+
+    if (!refreshToken) {
+      return res.status(400).json({ error: "Refresh token is required" });
+    }
+
+    const result = await authService.refresh(refreshToken);
+
+    if (result.error) {
+      return res
+        .status(result.error.status)
+        .json({ error: result.error.message });
+    }
+
+    res.status(200).json({
+      message: "Token refreshed successfully",
+      user: result.user,
+      token: result.token,
+      refreshToken: result.refreshToken,
+    });
+  } catch (error: unknown) {
+    console.error("Refresh controller error:", error);
+    res.status(500).json({ error: "Internal server error during refresh" });
   }
 };
 

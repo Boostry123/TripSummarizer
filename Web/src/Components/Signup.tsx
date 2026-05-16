@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { HiMail, HiLockClosed, HiUser, HiArrowRight } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
-import { authService } from "@/Apis/authService";
-import { useAuthStore } from "@/store/authStore";
+import { useAuth } from "@/hooks/useAuth";
 
 interface SignupProps {
   onToggle: () => void;
@@ -10,22 +9,19 @@ interface SignupProps {
 
 const Signup: React.FC<SignupProps> = ({ onToggle }) => {
   const navigate = useNavigate();
-  const signupStore = useAuthStore((state) => state.signup);
+  const { signup, isSigningUp } = useAuth();
 
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
 
     try {
-      const response = await authService.signup({ name, email, password });
-      signupStore(response.user, response.token);
+      await signup({ name, email, password });
       navigate("/");
     } catch (err: any) {
       console.error("Signup error:", err);
@@ -33,8 +29,6 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
         err.response?.data?.error ||
           "Failed to create account. Please try again.",
       );
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -63,7 +57,7 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
             <input
               type="text"
               required
-              disabled={loading}
+              disabled={isSigningUp}
               className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all disabled:opacity-50"
               placeholder="John Doe"
               value={name}
@@ -79,7 +73,7 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
             <input
               type="email"
               required
-              disabled={loading}
+              disabled={isSigningUp}
               className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all disabled:opacity-50"
               placeholder="name@example.com"
               value={email}
@@ -97,7 +91,7 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
             <input
               type="password"
               required
-              disabled={loading}
+              disabled={isSigningUp}
               className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all disabled:opacity-50"
               placeholder="Min. 8 characters"
               value={password}
@@ -108,10 +102,10 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={isSigningUp}
           className="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
         >
-          {loading ? (
+          {isSigningUp ? (
             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
           ) : (
             <>
@@ -126,7 +120,7 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
           Already have an account?{" "}
           <button
             onClick={onToggle}
-            disabled={loading}
+            disabled={isSigningUp}
             className="font-bold text-indigo-600 hover:text-indigo-700 transition-colors disabled:opacity-50"
           >
             Sign in here

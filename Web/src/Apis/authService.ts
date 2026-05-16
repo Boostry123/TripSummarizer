@@ -40,6 +40,17 @@ export const authService = {
   },
 
   /**
+   * Refresh the access token
+   */
+  refresh: async (refreshToken: string): Promise<AuthResponse> => {
+    const response = await apiClient.post<AuthResponse & { message: string }>(
+      "/auth/refresh",
+      { refreshToken },
+    );
+    return response.data;
+  },
+
+  /**
    * Get current user profile
    */
   getCurrentUser: async (): Promise<AuthResponse> => {

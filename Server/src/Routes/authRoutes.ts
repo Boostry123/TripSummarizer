@@ -21,6 +21,13 @@ router.post("/signup", validate(SignupSchema), authController.signup);
 router.post("/login", validate(LoginSchema), authController.login);
 
 /**
+ * @route POST /auth/refresh
+ * @desc Refresh the access token
+ * @access Public
+ */
+router.post("/refresh", authController.refresh);
+
+/**
  * @route POST /auth/logout
  * @desc Logout the current user
  * @access Private

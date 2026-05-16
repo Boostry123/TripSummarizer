@@ -14,7 +14,10 @@ export const useAuth = () => {
     login: setLogin,
     signup: setSignup,
     signout: setSignout,
+    setUser,
     user: storeUser,
+    expiresAt,
+    refreshAccessToken,
   } = useAuthStore();
 
   // Query to fetch the user profile if we have a token but no user in store
@@ -28,16 +31,32 @@ export const useAuth = () => {
   // Sync profile data to store when fetched
   useEffect(() => {
     if (profileData?.user && !storeUser) {
-      // Re-save to store to update the in-memory user object
-      setLogin(profileData.user, token?.replace("Bearer ", "") || "");
+      setUser(profileData.user);
     }
-  }, [profileData, storeUser, setLogin, token]);
+  }, [profileData, storeUser, setUser]);
+
+  // Check if token needs refresh
+  useEffect(() => {
+    if (!expiresAt || !token) return;
+
+    const checkRefresh = () => {
+      const timeLeft = expiresAt - Date.now();
+      // Refresh if less than 5 minutes left
+      if (timeLeft < 5 * 60 * 1000) {
+        refreshAccessToken();
+      }
+    };
+
+    checkRefresh();
+    const interval = setInterval(checkRefresh, 60 * 1000); // Check every minute
+    return () => clearInterval(interval);
+  }, [expiresAt, token, refreshAccessToken]);
 
   const loginMutation = useMutation({
     mutationFn: (credentials: LoginCredentials) =>
       authService.login(credentials),
     onSuccess: (data) => {
-      setLogin(data.user, data.token);
+      setLogin(data.user, data.token, data.refreshToken);
       queryClient.setQueryData(["user", `Bearer ${data.token}`], {
         user: data.user,
       });
@@ -48,7 +67,7 @@ export const useAuth = () => {
     mutationFn: (credentials: RegisterCredentials) =>
       authService.signup(credentials),
     onSuccess: (data) => {
-      setSignup(data.user, data.token);
+      setSignup(data.user, data.token, data.refreshToken);
       queryClient.setQueryData(["user", `Bearer ${data.token}`], {
         user: data.user,
       });

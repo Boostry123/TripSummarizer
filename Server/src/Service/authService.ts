@@ -31,6 +31,7 @@ export const signup = async (
       name: data.user?.user_metadata?.name || "",
     },
     token: data.session?.access_token,
+    refreshToken: data.session?.refresh_token,
   };
 };
 
@@ -54,6 +55,29 @@ export const login = async (
       name: data.user?.user_metadata?.name || "",
     },
     token: data.session?.access_token,
+    refreshToken: data.session?.refresh_token,
+  };
+};
+
+export const refresh = async (
+  refreshToken: string,
+): Promise<AuthServiceResponse> => {
+  const { data, error } = await supabase.auth.refreshSession({
+    refresh_token: refreshToken,
+  });
+
+  if (error) {
+    return { error: { status: error.status || 400, message: error.message } };
+  }
+
+  return {
+    user: {
+      id: data.user?.id || "",
+      email: data.user?.email || "",
+      name: data.user?.user_metadata?.name || "",
+    },
+    token: data.session?.access_token,
+    refreshToken: data.session?.refresh_token,
   };
 };
 

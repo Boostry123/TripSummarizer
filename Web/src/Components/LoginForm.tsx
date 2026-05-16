@@ -1,8 +1,7 @@
 import { useState } from "react";
 import { HiMail, HiLockClosed, HiArrowRight } from "react-icons/hi";
 import { useNavigate } from "react-router-dom";
-import { authService } from "@/Apis/authService";
-import { useAuthStore } from "@/store/authStore";
+import { useAuth } from "@/hooks/useAuth";
 
 interface LoginFormProps {
   onToggle: () => void;
@@ -10,21 +9,18 @@ interface LoginFormProps {
 
 const LoginForm: React.FC<LoginFormProps> = ({ onToggle }) => {
   const navigate = useNavigate();
-  const login = useAuthStore((state) => state.login);
+  const { login, isLoggingIn } = useAuth();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    setLoading(true);
     setError(null);
 
     try {
-      const response = await authService.login({ email, password });
-      login(response.user, response.token);
+      await login({ email, password });
       navigate("/");
     } catch (err: any) {
       console.error("Login error:", err);
@@ -32,8 +28,6 @@ const LoginForm: React.FC<LoginFormProps> = ({ onToggle }) => {
         err.response?.data?.error ||
           "Failed to sign in. Please check your credentials.",
       );
-    } finally {
-      setLoading(false);
     }
   };
 
@@ -60,7 +54,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onToggle }) => {
             <input
               type="email"
               required
-              disabled={loading}
+              disabled={isLoggingIn}
               className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all disabled:opacity-50"
               placeholder="name@example.com"
               value={email}
@@ -78,7 +72,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onToggle }) => {
             <input
               type="password"
               required
-              disabled={loading}
+              disabled={isLoggingIn}
               className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all disabled:opacity-50"
               placeholder="••••••••"
               value={password}
@@ -89,10 +83,10 @@ const LoginForm: React.FC<LoginFormProps> = ({ onToggle }) => {
 
         <button
           type="submit"
-          disabled={loading}
+          disabled={isLoggingIn}
           className="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
         >
-          {loading ? (
+          {isLoggingIn ? (
             <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
           ) : (
             <>
@@ -107,7 +101,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onToggle }) => {
           Don't have an account?{" "}
           <button
             onClick={onToggle}
-            disabled={loading}
+            disabled={isLoggingIn}
             className="font-bold text-indigo-600 hover:text-indigo-700 transition-colors disabled:opacity-50"
           >
             Sign up for free

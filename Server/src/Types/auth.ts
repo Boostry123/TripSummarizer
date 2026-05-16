@@ -25,6 +25,7 @@ export interface AuthServiceResponse {
     name: string;
   };
   token?: string;
+  refreshToken?: string;
   error?: {
     status: number;
     message: string;

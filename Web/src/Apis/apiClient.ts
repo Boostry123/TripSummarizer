@@ -37,8 +37,7 @@ apiClient.interceptors.response.use(
   (response) => response,
   (error) => {
     if (error.response?.status === 401) {
-      // Handle unauthorized access (e.g., redirect to login or clear store)
-      // useAuthStore.getState().signout();
+      useAuthStore.getState().signout();
     }
     return Promise.reject(error);
   },
