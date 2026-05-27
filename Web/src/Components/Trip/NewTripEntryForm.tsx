@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { useMobile } from "@/hooks/useMobile";
 import BaseEntryForm from "@/Components/Common/BaseEntryForm";
 //Icons
@@ -10,6 +11,7 @@ type entryProps = {
 
 const NewTripEntryForm = (props: entryProps) => {
   const isMobile = useMobile();
+  const navigate = useNavigate();
 
   const initialData = {
     Date: "",
@@ -22,8 +24,17 @@ const NewTripEntryForm = (props: entryProps) => {
   const [formData, setFormData] = useState<typeof initialData>(initialData);
 
   const handleSubmit = () => {
-    console.log("New Trip Plan Data:", formData);
+    const formattedMessage = `I want to plan a trip to ${formData.Location || "somewhere new"}. 
+    ${formData.Date ? `Planned date: ${formData.Date}.` : ""}
+    ${formData.Duration ? `Duration: ${formData.Duration}.` : ""}
+    ${formData.Budget ? `Budget: ${formData.Budget}.` : ""}
+    ${formData.Interests ? `My interests: ${formData.Interests}.` : ""}
+    Please generate a tailored recommendation based on these preferences and my past travel history.`;
+
     onClose();
+    navigate("/recommendations", {
+      state: { initialMessage: formattedMessage },
+    });
   };
 
   return (

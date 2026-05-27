@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { User } from "@/Types/auth";
 import { authService } from "@/Apis/authService";
+import { useRecommendationStore } from "./recommendationStore";
 
 interface AuthState {
   user: User | null;
@@ -50,6 +51,8 @@ export const useAuthStore = create<AuthState>()(
           refreshToken: null,
           expiresAt: null,
         });
+        useRecommendationStore.getState().setRecommendation(null);
+        useRecommendationStore.getState().setLastInitialMessage(null);
         localStorage.clear();
       },
 

@@ -17,6 +17,10 @@ const Navbar = () => {
     { name: "About", path: "/about" },
   ];
 
+  if (isAuthenticated) {
+    navLinks.push({ name: "Recommendations", path: "/recommendations" });
+  }
+
   const closeMenu = () => setIsOpen(false);
 
   const handleSignout = () => {

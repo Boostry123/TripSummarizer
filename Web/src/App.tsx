@@ -11,6 +11,7 @@ import TravelLogPage from "@/Pages/TravelLogPage";
 import FeaturesPage from "@/Pages/FeaturesPage";
 import AboutPage from "@/Pages/AboutPage";
 import AuthPage from "@/Pages/AuthPage";
+import RecommendationPage from "@/Pages/RecommendationPage";
 import Layout from "@/Components/Layout/Layout";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -40,6 +41,14 @@ const App = () => {
               element={
                 <ProtectedRoute>
                   <TravelLogPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/recommendations"
+              element={
+                <ProtectedRoute>
+                  <RecommendationPage />
                 </ProtectedRoute>
               }
             />

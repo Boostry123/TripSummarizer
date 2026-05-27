@@ -4,19 +4,24 @@ import { authenticate } from "@/Middleware/auth.js";
 import { validate } from "@/Middleware/validate.js";
 import { TripSchema, TripUpdateSchema } from "@/Types/validation.js";
 
-const router = Router();
+const tripRoutes = Router();
 
 // Create a new trip
-router.post("/", authenticate, validate(TripSchema), tripController.createTrip);
+tripRoutes.post(
+  "/",
+  authenticate,
+  validate(TripSchema),
+  tripController.createTrip,
+);
 
 // Get all trips for the authenticated user
-router.get("/", authenticate, tripController.getTrips);
+tripRoutes.get("/", authenticate, tripController.getTrips);
 
 // Get a specific trip by ID
-router.get("/:id", authenticate, tripController.getTripById);
+tripRoutes.get("/:id", authenticate, tripController.getTripById);
 
 // Update a trip by ID
-router.patch(
+tripRoutes.patch(
   "/:id",
   authenticate,
   validate(TripUpdateSchema),
@@ -24,6 +29,6 @@ router.patch(
 );
 
 // Delete a trip by ID
-router.delete("/:id", authenticate, tripController.deleteTrip);
+tripRoutes.delete("/:id", authenticate, tripController.deleteTrip);
 
-export default router;
+export default tripRoutes;

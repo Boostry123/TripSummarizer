@@ -2,7 +2,7 @@
 
 ## Project Vision
 
-TripSummarizer is a web application designed to capture and synthesize travel experiences. Users log their trips, rating specific activities and providing free-text narratives. The core value proposition is an AI-driven engine that analyzes this accumulated personal data to understand a user's unique preferences, enabling pinpoint recommendations for future travels based on their historical "likes" and "dislikes."
+TripSummarizer is a web application designed to capture and synthesize travel experiences. Users log their trips, rating specific activities and providing free-text narratives. The core value proposition is an AI-driven engine that analyzes this accumulated personal data to understand a user's unique preferences, enabling pinpoint recommendations for future travels based on their historical "likes" and "dislikes." It will then generate a recommendation and will wait for additional requests to even further pinpoint the perfect trip.
 
 ## Core Mandates
 
@@ -15,28 +15,28 @@ TripSummarizer is a web application designed to capture and synthesize travel ex
 - **Frontend**: React (Vite), TypeScript, Tailwind CSS 4, TanStack React Query (Caching)
 - **Backend**: Node.js (v26.1.0+), Express, TypeScript, tsx (for dev), Zod (Validation)
 - **Database**: Supabase (PostgreSQL) with Row Level Security (RLS)
-- **AI**: Gemini API (for context traversal and recommendations)
+- **AI**: TanStack AI with Ollama (Local LLM - qwen3:8B)
 
 ## Architecture
 
 ### Server (`/Server`)
 
 - `src/Config`: Database initialization (`Db.ts`).
-- `src/Routes`: API endpoints.
+- `src/Routes`: API endpoints (`chatBotRoutes.ts`).
 - `src/Controllers`: Request handling logic.
 - `src/Types`: TypeScript interfaces (Database schema & Zod types).
-- `src/Service`: Business logic and AI integration.
+- `src/Service`: Business logic and AI integration (`chatBotService.ts`).
 - `src/Middleware`: Authentication and Zod `validate.ts` middleware.
 
 ### Web (`/Web`)
 
-- `src/Apis`: Services for backend communication.
+- `src/Apis`: Services for backend communication (`chatService.ts`).
 - `src/Components`: Organized UI elements:
-    - `Auth/`: Authentication forms (Login, Signup).
-    - `Common/`: Reusable base components (Card, BaseEntryForm).
-    - `Layout/`: Structural components (Navbar, Footer, Layout).
-    - `Trip/`: Trip-specific UI (Forms, Modals).
-- `src/Pages`: Top-level route components.
+  - `Auth/`: Authentication forms (Login, Signup).
+  - `Common/`: Reusable base components (Card, BaseEntryForm).
+  - `Layout/`: Structural components (Navbar, Footer, Layout).
+  - `Trip/`: Trip-specific UI (Forms, Modals).
+- `src/Pages`: Top-level route components (`RecommendationPage.tsx`).
 - `src/hooks`: Custom React hooks.
 - `src/Helper`: Utility functions.
 - `src/Types`: Shared TypeScript types.
@@ -93,5 +93,5 @@ Stores user travel logs.
 5. [x] Database Schema & Server-side Validation (Supabase + Zod)
 6. [x] API Implementation (Routes & Controllers for Auth, Trips & Profiles)
 7. [x] Frontend Integration (Connecting Web to Server for Auth, Trip Logging & Profile Management)
-8. [ ] AI Context Integration & Recommendation Engine
+8. [x] AI Context Integration & Recommendation Engine
 9. [ ] Polish & Visual Refining
