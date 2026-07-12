@@ -9,6 +9,11 @@ node_modules/
 **/.env
 **/.env.*
 
+# --- Docker Local Overrides ---
+docker-compose.override.yml
+# (Allow the example override file)
+!docker-compose.override.example.yml
+
 # OS Files
 .DS_Store
 .DS_Store?

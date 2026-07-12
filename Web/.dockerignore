@@ -1,0 +1,25 @@
+# Dependency directories
+node_modules/
+
+# Build outputs (Vite/TypeScript)
+dist/
+build/
+
+# Environment variables (Docker Compose handles these)
+.env
+.env.local
+.env.*
+
+# Git folder
+.git/
+
+# Docker files (no need to copy the Dockerfile into the image itself)
+Dockerfile
+.dockerignore
+docker-compose.yml
+
+# Logs
+npm-debug.log
+npm-debug.log.*
+yarn-debug.log
+yarn-error.log

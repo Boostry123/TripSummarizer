@@ -1,0 +1,19 @@
+# docker-compose.yml (Production Base)
+services:
+  web:
+    build:
+      context: ./Web
+      target: production # Points to the Nginx stage
+    ports:
+      - "80:80" # Expose on standard HTTP port
+    depends_on:
+      - server
+
+  server:
+    build:
+      context: ./Server
+      target: production # Points to the Production Node stage
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./Server/.env # Provide production Supabase URLs/keys
