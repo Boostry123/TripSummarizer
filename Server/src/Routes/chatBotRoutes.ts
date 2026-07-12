@@ -7,7 +7,7 @@ const chatBotRoutes = Router();
 chatBotRoutes.post("/", authenticate, async (req: AuthRequest, res) => {
   const token = req.token;
   const userId = req.user?.id;
-  const { message } = req.body;
+  const { message, history } = req.body;
 
   if (!token || !userId) {
     return res.status(401).json({ error: "Unauthorized" });
@@ -18,6 +18,7 @@ chatBotRoutes.post("/", authenticate, async (req: AuthRequest, res) => {
       token,
       userId,
       message,
+      history,
     );
 
     res.status(200).json({ recommendation });

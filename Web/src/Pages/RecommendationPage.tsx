@@ -5,7 +5,7 @@ import ReactMarkdown from "react-markdown";
 import { getRecommendation } from "@/Apis/chatService";
 import { useRecommendationStore } from "@/store/recommendationStore";
 import Card from "@/Components/Common/Card";
-import { HiSparkles } from "react-icons/hi";
+import { HiSparkles, HiTrash } from "react-icons/hi";
 
 const RecommendationPage: React.FC = () => {
   const location = useLocation();
@@ -14,6 +14,9 @@ const RecommendationPage: React.FC = () => {
   const {
     recommendation,
     setRecommendation,
+    history,
+    addToHistory,
+    clearHistory,
     lastInitialMessage,
     setLastInitialMessage,
   } = useRecommendationStore();
@@ -21,9 +24,18 @@ const RecommendationPage: React.FC = () => {
   const [adjustment, setAdjustment] = useState("");
 
   const mutation = useMutation({
-    mutationFn: (msg?: string) => getRecommendation(msg),
-    onSuccess: (data) => {
+    mutationFn: (msg?: string) => getRecommendation(msg, history),
+    onSuccess: (data, variables) => {
       setRecommendation(data);
+      if (variables) {
+        addToHistory({ role: "user", content: variables });
+      } else if (history.length === 0) {
+        addToHistory({
+          role: "user",
+          content: "Generate a recommendation for my next trip.",
+        });
+      }
+      addToHistory({ role: "assistant", content: data });
     },
   });
 
@@ -54,11 +66,23 @@ const RecommendationPage: React.FC = () => {
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
-      <div className="flex items-center justify-center gap-3 mb-6">
-        <HiSparkles className="text-3xl text-brand-primary animate-pulse" />
-        <h1 className="text-3xl font-bold text-center text-brand-primary">
-          Your AI Travel Recommendations
-        </h1>
+      <div className="flex items-center justify-between mb-6">
+        <div className="flex items-center gap-3">
+          <HiSparkles className="text-3xl text-brand-primary animate-pulse" />
+          <h1 className="text-3xl font-bold text-brand-primary">
+            Your AI Travel Recommendations
+          </h1>
+        </div>
+        {recommendation && (
+          <button
+            onClick={clearHistory}
+            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+            title="Clear conversation history and start fresh"
+          >
+            <HiTrash />
+            Clear History
+          </button>
+        )}
       </div>
 
       <div className="mb-8">
