@@ -22,14 +22,12 @@ export const generateRecommendation = async (
   const tripContext = formatTripsForAI(trips);
 
   // 3. Prepare Instructions
-  const personaAndHistory = `
+  const personaAndHistoryAndGuidelines = `
     You are an expert travel recommendation engine. Your goal is to suggest a personalized next trip based on the user's past experiences.
 
     User's Travel History:
     ${tripContext}
-  `.trim();
 
-  const guidelines = `
     Instructions:
     - Analyze the user's likes and hates from past trips.
     - Consider their ratings (1-5).
@@ -58,54 +56,45 @@ export const generateRecommendation = async (
     - Say anything that is not relevant to the current recommendation for example, I didn't choose Ukraine because...
     - Slip away of your role and don't answer anything unrelated to travel recommendations.
     - Make up information about the user that is not in the trip history.
+
   `.trim();
 
   // 4. Construct Messages Array
   const messages: { role: "user" | "assistant"; content: string }[] = [];
 
-  // Deep copy history to avoid mutation if needed (though history is fresh from req.body)
-  const conversationHistory = history.map((h) => ({ ...h }));
-
-  if (conversationHistory.length > 0) {
-    // Prepend persona and history to the first user message
-    const firstUserIndex = conversationHistory.findIndex(
-      (m) => m.role === "user",
-    );
-    if (firstUserIndex !== -1) {
-      conversationHistory[firstUserIndex].content =
-        `${personaAndHistory}\n\n${guidelines}\n\nUser Request: ${conversationHistory[firstUserIndex].content}`;
-    }
-    messages.push(...conversationHistory);
-  }
-
-  // Add the current user request
   const currentRequest =
     userAdjustments || "Generate a recommendation for my next trip.";
 
-  if (messages.length === 0) {
+  if (history && history.length > 0) {
+    // Deep copy history to avoid mutating the parameter
+    const conversationHistory = history.map((h) => ({ ...h }));
+
+    // Prepend the system instructions/guidelines to the very first user message
+    conversationHistory[0].content = `
+SYSTEM INSTRUCTIONS:
+${personaAndHistoryAndGuidelines}
+
+USER COMMAND:
+${conversationHistory[0].content}
+    `.trim();
+
+    messages.push(...conversationHistory);
+
+    // Append the refinement command
+    messages.push({
+      role: "user",
+      content: `USER COMMAND: ${currentRequest}`.trim(),
+    });
+  } else {
     // First message ever: persona + history + guidelines + request
     messages.push({
       role: "user",
       content: `
 SYSTEM INSTRUCTIONS:
-${personaAndHistory}
-
-${guidelines}
+${personaAndHistoryAndGuidelines}
 
 USER COMMAND:
 ${currentRequest}
-      `.trim(),
-    });
-  } else {
-    // Follow-up: Re-attach guidelines to ensure the model stays in format
-    messages.push({
-      role: "user",
-      content: `
-USER COMMAND:
-${currentRequest}
-
-IMPORTANT: You MUST follow the strict formatting and rules below for your response:
-${guidelines}
       `.trim(),
     });
   }
@@ -126,6 +115,7 @@ ${guidelines}
         : ollamaText(selectedAdapterLocalModel),
     messages: messages,
     stream: false,
+    systemPrompts: [personaAndHistoryAndGuidelines],
   });
 
   return response;
