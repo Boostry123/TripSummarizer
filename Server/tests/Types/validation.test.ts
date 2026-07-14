@@ -1,5 +1,5 @@
 import { describe, it, expect } from "vitest";
-import { LoginSchema, TripSchema } from "../../src/Types/validation";
+import { LoginSchema, TripSchema } from "../../src/Types/validation.js";
 
 describe("loginSchema", () => {
   // Test case for valid input

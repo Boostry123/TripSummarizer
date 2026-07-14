@@ -1,5 +1,6 @@
 import { chat } from "@tanstack/ai";
 import { ollamaText } from "@tanstack/ai-ollama";
+import { geminiText } from "@tanstack/ai-gemini";
 import { getTrips } from "./tripService.js";
 import { Trip } from "@/Types/database.js";
 
@@ -110,15 +111,23 @@ ${guidelines}
   }
 
   // 5. Call AI Provider
-  const selectedAdapter = "qwen3:4b"; // Using the model user started with
+  const selectedAdapterLocalModel = "qwen3:4b";
+  const selectedAdapterAPI = "gemini-3.1-flash-lite";
+
+  const userChosenModel = process.env.AI_PROVIDER || "qwen3:4b"; // Default to local model if not specified
+  console.log(
+    `Using AI Provider: ${userChosenModel} for recommendation generation...`,
+  );
 
   const response = await chat({
-    adapter: ollamaText(selectedAdapter),
+    adapter:
+      userChosenModel === "gemini"
+        ? geminiText(selectedAdapterAPI)
+        : ollamaText(selectedAdapterLocalModel),
     messages: messages,
     stream: false,
   });
 
-  // When stream is false, response contains the full message
   return response;
 };
 
