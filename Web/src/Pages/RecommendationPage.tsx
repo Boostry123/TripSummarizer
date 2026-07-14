@@ -1,5 +1,5 @@
-import React, { useState } from "react";
-import { useLocation } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import ReactMarkdown from "react-markdown";
 import { getRecommendation } from "@/Apis/chatService";
@@ -9,6 +9,7 @@ import { HiSparkles, HiTrash } from "react-icons/hi";
 
 const RecommendationPage: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
   const initialMessage = location.state?.initialMessage;
 
   const {
@@ -46,7 +47,7 @@ const RecommendationPage: React.FC = () => {
   };
 
   // Initial load logic
-  React.useEffect(() => {
+  useEffect(() => {
     // If we have an initial message from location state
     if (initialMessage) {
       // Only trigger if it's different from the last one we processed
@@ -56,13 +57,13 @@ const RecommendationPage: React.FC = () => {
       }
     } else {
       // No initial message (navigated directly)
-      // Only trigger if we don't have a recommendation yet
-      if (!recommendation && !mutation.isPending) {
-        mutation.mutate(undefined);
+      // Simply redirect if there is no history in the store
+      if (history.length === 0) {
+        navigate("/travel-log", { replace: true });
       }
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [initialMessage, lastInitialMessage]);
+  }, [initialMessage, lastInitialMessage, history.length, navigate]);
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
