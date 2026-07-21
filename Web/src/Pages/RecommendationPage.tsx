@@ -25,7 +25,11 @@ const RecommendationPage: React.FC = () => {
   const [adjustment, setAdjustment] = useState("");
 
   const mutation = useMutation({
-    mutationFn: (msg?: string) => getRecommendation(msg, history),
+    mutationFn: (msg?: string) =>
+      getRecommendation(
+        msg,
+        history.length > 0 ? [history[0], history[history.length - 1]] : [],
+      ),
     onSuccess: (data, variables) => {
       setRecommendation(data);
       if (variables) {

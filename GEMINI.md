@@ -27,6 +27,14 @@ TripSummarizer is a web application designed to capture and synthesize travel ex
 - `src/Types`: TypeScript interfaces (Database schema & Zod types).
 - `src/Service`: Business logic and AI integration (`chatBotService.ts`).
 - `src/Middleware`: Authentication and Zod `validate.ts` middleware.
+- **npm Scripts** ([package.json](file:///F:/coding/web-dev/TripSummarizer/Server/package.json)):
+  - `npm run dev`: Starts local Express dev server with hot-reloading (`tsx watch src/index.ts`).
+  - `npm run dev:docker`: Starts the app inside Docker using tsx (`tsx src/index.ts`).
+  - `npm run build`: Compiles TypeScript and runs `tsc-alias` to rewrite import paths.
+  - `npm start`: Runs the compiled production code from `dist/src/index.js`.
+  - `npm run lint`: Runs ESLint checks.
+  - `npm run validate`: Runs lint and build sequentially to verify project correctness.
+  - `npm run test`: Initiates the Vitest suite in watch mode.
 
 ### Web (`/Web`)
 
@@ -40,6 +48,12 @@ TripSummarizer is a web application designed to capture and synthesize travel ex
 - `src/hooks`: Custom React hooks.
 - `src/Helper`: Utility functions.
 - `src/Types`: Shared TypeScript types.
+- **npm Scripts** ([package.json](file:///F:/coding/web-dev/TripSummarizer/Web/package.json)):
+  - `npm run dev`: Boots Vite development server with host access enabled (`vite --host`).
+  - `npm run build`: Compiles production assets into `/dist`.
+  - `npm run preview`: Launches a local preview server for the compiled production builds.
+  - `npm run lint`: Runs ESLint checks.
+  - `npm run validate`: Performs ESLint check, strict TypeScript type check (`tsc --noEmit`), and build compilation.
 
 ## Database Schema
 
@@ -83,6 +97,22 @@ Stores user travel logs.
   - **Refresh Mechanism**: A 45-minute timeout is enforced in the store. The `useAuth` hook monitors expiration and automatically uses the `refreshToken` to fetch a new session before the access token expires.
   - **Memory-only User State**: The user profile object is kept in the Zustand store memory and NOT persisted to `localStorage` for security and freshness.
   - **Total Cleanup**: On signout, `localStorage.clear()` is called to ensure no residual auth data remains on the client.
+
+## Server Testing
+
+The backend tests are run using **Vitest** to ensure correctness of core business services and input validations.
+
+- **Configuration**: Managed in [vitest.config.ts](file:///F:/coding/web-dev/TripSummarizer/Server/vitest.config.ts), setting up path aliases (`@/` mapping to `Server/src/`) and test exclusion patterns.
+- **Commands**:
+  - Run tests in watch mode: `npm run test` (or `npx vitest`) from the `Server/` directory.
+  - Run tests once: `npm test -- --run`
+- **Test Categories**:
+  - **Services** (located in [Server/tests/Services/](file:///F:/coding/web-dev/TripSummarizer/Server/tests/Services)):
+    - [tripService.test.ts](file:///F:/coding/web-dev/TripSummarizer/Server/tests/Services/tripService.test.ts): Mocks [getSupabaseClient](file:///F:/coding/web-dev/TripSummarizer/Server/src/Config/Db.ts) and tests the [getTrips](file:///F:/coding/web-dev/TripSummarizer/Server/src/Service/tripService.ts) service method. Verifies success path querying the `trips` table sorted by `created_at` descending, and verifies appropriate error propagation when database queries fail.
+  - **Validation & Types** (located in [Server/tests/Types/](file:///F:/coding/web-dev/TripSummarizer/Server/tests/Types)):
+    - [validation.test.ts](file:///F:/coding/web-dev/TripSummarizer/Server/tests/Types/validation.test.ts): Tests schemas defined in [validation.ts](file:///F:/coding/web-dev/TripSummarizer/Server/src/Types/validation.ts):
+      - [LoginSchema](file:///F:/coding/web-dev/TripSummarizer/Server/src/Types/validation.ts#L6): Validates inputs for format compliance, including email formatting and minimum password length constraints.
+      - [TripSchema](file:///F:/coding/web-dev/TripSummarizer/Server/src/Types/validation.ts#L35): Validates fields required for logging trips, including non-empty string and array validations, support for YYYY-MM-DD or ISO 8601 date formats, rating range limits (1-5), and numeric integer constraints.
 
 ## Development Roadmap
 

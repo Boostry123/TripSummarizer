@@ -13,6 +13,6 @@ CMD ["npm", "run", "dev:docker"]
 # --- Stage 3: Production ---
 FROM base AS production
 COPY . .
-# If you compile TypeScript on the backend, add a build step here and only copy the output
+RUN npm run build
 EXPOSE 3001
-CMD ["node", "index.js"]
+CMD ["node", "dist/src/index.js"]
