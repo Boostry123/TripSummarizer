@@ -13,7 +13,7 @@ TripSummarizer is a web application designed to capture and synthesize travel ex
 ## Tech Stack
 
 - **Frontend**: React (Vite), TypeScript, Tailwind CSS 4, TanStack React Query (Caching)
-- **Backend**: Node.js (v26.1.0+), Express, TypeScript, tsx (for dev), Zod (Validation), Drizzle ORM (`drizzle-orm`, `drizzle-kit`)
+- **Backend**: Node.js (v20.0.0+), Express, TypeScript, tsx (for dev), Zod (Validation), Drizzle ORM (`drizzle-orm`, `drizzle-kit`)
 - **Database**: Supabase (PostgreSQL) with Row Level Security (RLS) & Drizzle ORM
 - **AI**: TanStack AI with Ollama (Local LLM - qwen3:8B)
 
