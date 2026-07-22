@@ -10,7 +10,10 @@
     "build": "tsc && tsc-alias",
     "lint": "eslint .",
     "validate": "npm run lint && npm run build",
-    "test": "vitest"
+    "test": "vitest",
+    "db:generate": "drizzle-kit generate",
+    "db:migrate": "drizzle-kit migrate",
+    "db:studio": "drizzle-kit studio"
   },
   "keywords": [],
   "author": "Boostry",
@@ -26,7 +29,9 @@
     "@tanstack/ai-ollama": "^0.8.14",
     "cors": "^2.8.6",
     "dotenv": "^17.4.2",
+    "drizzle-orm": "^0.45.2",
     "express": "^5.2.1",
+    "postgres": "^3.4.9",
     "zod": "^4.4.3"
   },
   "devDependencies": {
@@ -34,6 +39,7 @@
     "@types/cors": "^2.8.19",
     "@types/express": "^5.0.6",
     "@types/node": "^25.6.2",
+    "drizzle-kit": "^0.31.10",
     "eslint": "^10.3.0",
     "globals": "^17.6.0",
     "tsc-alias": "^1.9.1",
