@@ -56,13 +56,14 @@ export const getTrips = async (req: AuthRequest, res: Response) => {
 export const getTripById = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params as { id: string };
+    const userId = req.user?.id;
     const token = req.token;
 
-    if (!req.user || !token) {
+    if (!userId || !token) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const trip = await tripService.getTripById(token, id);
+    const trip = await tripService.getTripById(token, id, userId);
     res.status(200).json(trip);
   } catch (error: unknown) {
     handleError(res, error, "GetTripById");
@@ -73,13 +74,19 @@ export const updateTrip = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params as { id: string };
     const tripData = req.body as ValidatedTripUpdate;
+    const userId = req.user?.id;
     const token = req.token;
 
-    if (!req.user || !token) {
+    if (!userId || !token) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    const updatedTrip = await tripService.updateTrip(token, id, tripData);
+    const updatedTrip = await tripService.updateTrip(
+      token,
+      id,
+      userId,
+      tripData,
+    );
     res.status(200).json(updatedTrip);
   } catch (error: unknown) {
     handleError(res, error, "UpdateTrip");
@@ -89,13 +96,14 @@ export const updateTrip = async (req: AuthRequest, res: Response) => {
 export const deleteTrip = async (req: AuthRequest, res: Response) => {
   try {
     const { id } = req.params as { id: string };
+    const userId = req.user?.id;
     const token = req.token;
 
-    if (!req.user || !token) {
+    if (!userId || !token) {
       return res.status(401).json({ error: "Unauthorized" });
     }
 
-    await tripService.deleteTrip(token, id);
+    await tripService.deleteTrip(token, id, userId);
     res.status(204).send();
   } catch (error: unknown) {
     handleError(res, error, "DeleteTrip");
