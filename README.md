@@ -17,8 +17,9 @@ TripSummarizer/
 ├── docker-compose.override.yml  # Development overrides
 ├── GEMINI.md                    # Core project documentation
 ├── Server/                      # Express Backend
-│   ├── src/                     # Source files (Config, Controllers, Routes, Services, Types)
+│   ├── src/                     # Source files (Config, Controllers, Db, Routes, Services, Types)
 │   ├── tests/                   # Service and type validations (Vitest)
+│   ├── drizzle.config.ts        # Drizzle ORM configuration
 │   ├── package.json
 │   └── tsconfig.json
 └── Web/                         # React Frontend
@@ -43,10 +44,10 @@ TripSummarizer/
 - **Runtime**: [Node.js](https://nodejs.org/) (v26.1.0+)
 - **Server**: [Express](https://expressjs.com/)
 - **Language**: [TypeScript](https://www.typescriptlang.org/) with `tsx` (TypeScript Execute) for hot reloading
-- **Validation**: [Zod](https://zod.dev/)
+- **ORM / Migrations**: [Drizzle ORM](https://orm.drizzle.team/) & Drizzle Kit
 
 ### Database & AI
-- **Database**: [Supabase (PostgreSQL)](https://supabase.com/) with Row Level Security (RLS) policies
+- **Database**: [Supabase (PostgreSQL)](https://supabase.com/) with Row Level Security (RLS) policies & Drizzle ORM
 - **AI Integration**: [TanStack AI](https://tanstack.com/) with [Ollama](https://ollama.com/) (running `qwen3:8B` locally) or Gemini API.
 
 ---
@@ -112,6 +113,11 @@ Ensure you have completed **Step 1: Environment Setup** above.
 cd Server
 npm install
 npm run dev
+
+# Database Management (Drizzle ORM)
+npm run db:generate # Generate SQL migrations from schema
+npm run db:migrate  # Apply migrations to database
+npm run db:studio   # Launch Drizzle Studio visual inspector
 ```
 
 #### 2. Run the Frontend

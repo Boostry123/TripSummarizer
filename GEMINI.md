@@ -13,15 +13,16 @@ TripSummarizer is a web application designed to capture and synthesize travel ex
 ## Tech Stack
 
 - **Frontend**: React (Vite), TypeScript, Tailwind CSS 4, TanStack React Query (Caching)
-- **Backend**: Node.js (v26.1.0+), Express, TypeScript, tsx (for dev), Zod (Validation)
-- **Database**: Supabase (PostgreSQL) with Row Level Security (RLS)
+- **Backend**: Node.js (v26.1.0+), Express, TypeScript, tsx (for dev), Zod (Validation), Drizzle ORM (`drizzle-orm`, `drizzle-kit`)
+- **Database**: Supabase (PostgreSQL) with Row Level Security (RLS) & Drizzle ORM
 - **AI**: TanStack AI with Ollama (Local LLM - qwen3:8B)
 
 ## Architecture
 
 ### Server (`/Server`)
 
-- `src/Config`: Database initialization (`Db.ts`).
+- `src/Config`: Supabase & Database configuration (`Db.ts`).
+- `src/Db`: Drizzle ORM configuration, client connection (`Client.ts`), table schemas (`Schema.ts`), and SQL migrations (`Migrations/`).
 - `src/Routes`: API endpoints (`chatBotRoutes.ts`).
 - `src/Controllers`: Request handling logic.
 - `src/Types`: TypeScript interfaces (Database schema & Zod types).
@@ -35,6 +36,9 @@ TripSummarizer is a web application designed to capture and synthesize travel ex
   - `npm run lint`: Runs ESLint checks.
   - `npm run validate`: Runs lint and build sequentially to verify project correctness.
   - `npm run test`: Initiates the Vitest suite in watch mode.
+  - `npm run db:generate`: Generates SQL migration scripts using Drizzle Kit.
+  - `npm run db:migrate`: Executes pending SQL migrations against the database.
+  - `npm run db:studio`: Opens Drizzle Studio visual database inspector.
 
 ### Web (`/Web`)
 
@@ -64,6 +68,7 @@ Linked 1:1 with `auth.users`. Automatically managed via triggers.
 - `id`: `uuid` (Primary Key, references `auth.users.id`)
 - `email`: `text` (Unique, non-nullable)
 - `name`: `text` (Nullable)
+- `phone_number`: `varchar(20)` (Unique, Nullable)
 - `updated_at`: `timestamp with time zone` (Default: `now()`)
 
 ### `trips` (Table)
