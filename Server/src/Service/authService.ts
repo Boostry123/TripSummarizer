@@ -1,10 +1,12 @@
-import { getSupabaseClient, default as supabase } from "@/Config/Db.js";
+import { default as supabase } from "@/Config/Db.js";
+import { eq } from "drizzle-orm";
+import db from "@/Db/Client.js";
 import {
   LoginCredentials,
   RegisterCredentials,
   AuthServiceResponse,
 } from "@/Types/auth.js";
-import { Profile } from "@/Types/database.js";
+import { profiles } from "@/Db/Schema.js";
 
 export const signup = async (
   credentials: RegisterCredentials,
@@ -95,24 +97,29 @@ export const getCurrentUser = async (
   token: string,
   userId: string,
 ): Promise<AuthServiceResponse> => {
-  const supabaseAuthenticated = getSupabaseClient(token);
-  const { data, error } = await supabaseAuthenticated
-    .from("profiles")
-    .select("*")
-    .eq("id", userId)
-    .single<Profile>();
+  try {
+    const [data] = await db
+      .select()
+      .from(profiles)
+      .where(eq(profiles.id, userId))
+      .limit(1);
 
-  if (error || !data) {
+    if (!data) {
+      return {
+        error: { status: 400, message: "Profile not found" },
+      };
+    }
     return {
-      error: { status: 400, message: error?.message || "Profile not found" },
+      user: {
+        id: data.id,
+        email: data.email,
+        name: data.name || "",
+      },
+    };
+  } catch (error: unknown) {
+    console.error("Getting user error", error);
+    return {
+      error: { status: 500, message: "Database error" },
     };
   }
-
-  return {
-    user: {
-      id: data.id,
-      email: data.email,
-      name: data.name || "",
-    },
-  };
 };
