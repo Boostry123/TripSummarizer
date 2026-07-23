@@ -2,7 +2,10 @@ import { chat } from "@tanstack/ai";
 import { ollamaText } from "@tanstack/ai-ollama";
 import { geminiText } from "@tanstack/ai-gemini";
 import { getTrips } from "./tripService.js";
+//types
 import { Trip } from "@/Types/database.js";
+//tools
+import { getImagesTool } from "@/Tools/imageSearchTool.js";
 
 /**
  * ChatBot Service
@@ -37,8 +40,10 @@ export const generateRecommendation = async (
     - Key aspects to make sure to cover: Climate preference, Political tensions, cultural interests, budget hints, and any travel patterns you can infer from their history.
     - Keep the response concise and focused on the recommendation. Avoid unnecessary explanations or justifications.
     - Use Markdown formatting for better readability, especially for the itinerary section.
+    - Include 1 image URL of the country ( using the appropriate tool)
 
     Response Format:
+    Country_Image: [Image URL]
     Country: [Recommended Country]
     Cities: [Recommended Cities]
     Activities: [Suggested Activities or Itinerary]
@@ -116,6 +121,7 @@ ${currentRequest}
     messages: messages,
     stream: false,
     systemPrompts: [personaAndHistoryAndGuidelines],
+    tools: [getImagesTool],
   });
 
   return response;

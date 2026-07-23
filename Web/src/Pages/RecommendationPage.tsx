@@ -5,6 +5,7 @@ import ReactMarkdown from "react-markdown";
 import { getRecommendation } from "@/Apis/chatService";
 import { useRecommendationStore } from "@/store/recommendationStore";
 import Card from "@/Components/Common/Card";
+import ImageContainer from "@/Components/Images/ImageContainer";
 import { HiSparkles, HiTrash } from "react-icons/hi";
 
 const RecommendationPage: React.FC = () => {
@@ -69,6 +70,14 @@ const RecommendationPage: React.FC = () => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialMessage, lastInitialMessage, history.length, navigate]);
 
+  // Matches "Country_Image: " followed by the URL until it hits a space or newline
+  const regex = /Country_Image:\s*(https?:\/\/[^\s]+)/;
+  const match = recommendation?.match(regex);
+
+  const imageUrl = match ? match[1] : null;
+  const refinedRecommendation = recommendation?.split(regex)[2];
+  console.log(imageUrl);
+
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
       <div className="flex items-center justify-between mb-6">
@@ -101,7 +110,8 @@ const RecommendationPage: React.FC = () => {
             </div>
           ) : recommendation ? (
             <div className="prose prose-slate dark:prose-invert max-w-none text-lg leading-relaxed text-brand-text">
-              <ReactMarkdown>{recommendation}</ReactMarkdown>
+              {imageUrl ? <ImageContainer URL={imageUrl} /> : "No image"}
+              <ReactMarkdown>{refinedRecommendation}</ReactMarkdown>
             </div>
           ) : (
             <div className="flex-1 flex items-center justify-center text-brand-text-muted italic">
