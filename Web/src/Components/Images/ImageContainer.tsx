@@ -2,7 +2,8 @@ import Card from "@/Components/Common/Card";
 import { UnsplashAttribution } from "@/Components/Images/UnsplashAttribution";
 
 interface imageContainerParams {
-  URL: string | null;
+  URL: string | undefined;
+  user: { name: string; link: string } | undefined;
 }
 
 const ImageContainer = (params: imageContainerParams) => {
@@ -11,7 +12,11 @@ const ImageContainer = (params: imageContainerParams) => {
   return (
     <Card>
       <img src={imageUrl ?? ""} alt="Image" referrerPolicy="no-referrer" />
-      <UnsplashAttribution />
+      {params.user ? (
+        <UnsplashAttribution user={params.user} appName={"TripSummarizer"} />
+      ) : (
+        ""
+      )}
     </Card>
   );
 };

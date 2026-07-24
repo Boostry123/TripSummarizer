@@ -39,17 +39,24 @@ export const generateRecommendation = async (
     - Keep the tone inspiring and helpful.
     - Key aspects to make sure to cover: Climate preference, Political tensions, cultural interests, budget hints, and any travel patterns you can infer from their history.
     - Keep the response concise and focused on the recommendation. Avoid unnecessary explanations or justifications.
-    - Use Markdown formatting for better readability, especially for the itinerary section.
-    - Include 1 image URL of the country ( using the appropriate tool)
+    - Response should be structured as {key:value}.
+    - Use Markdown formatting for better readability only for the value parts in the {key:value} IMPORTANT: there could be nested keys.
+    - Fetch a picture using a Tool and parse the information according to the Response Format.
 
     Response Format:
-    Country_Image: [Image URL]
+    {
+    Country_Image: {
+      image_url: string,
+      photographer_name: string, 
+      photographer_link: string
+    }
     Country: [Recommended Country]
     Cities: [Recommended Cities]
     Activities: [Suggested Activities or Itinerary]
     Timeline: [Well curated daily itinerary with activities, dining, and sightseeing suggestions, with exact time planning]
     Summary: [Bullet point of Country, Cities, Activities]
-
+    }
+    
     TimeLine should be in the format:
     Day #:
       - Morning: [Activity]

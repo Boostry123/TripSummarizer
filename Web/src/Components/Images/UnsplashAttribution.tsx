@@ -3,9 +3,7 @@ import React from "react";
 // The shape of the user object returned by the Unsplash API
 interface UnsplashUser {
   name: string;
-  links: {
-    html: string;
-  };
+  link: string;
 }
 
 interface AttributionProps {
@@ -20,7 +18,7 @@ export const UnsplashAttribution: React.FC<AttributionProps> = ({
   // Unsplash requires these exact UTM parameters on every link
   const utmParams = `?utm_source=${encodeURIComponent(appName)}&utm_medium=referral`;
 
-  const profileUrl = `${user.links.html}${utmParams}`;
+  const profileUrl = `${user.link}${utmParams}`;
   const unsplashUrl = `https://unsplash.com/${utmParams}`;
 
   return (
