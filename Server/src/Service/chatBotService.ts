@@ -2,7 +2,10 @@ import { chat } from "@tanstack/ai";
 import { ollamaText } from "@tanstack/ai-ollama";
 import { geminiText } from "@tanstack/ai-gemini";
 import { getTrips } from "./tripService.js";
+//types
 import { Trip } from "@/Types/database.js";
+//tools
+import { getImagesTool } from "@/Tools/imageSearchTool.js";
 
 /**
  * ChatBot Service
@@ -36,15 +39,24 @@ export const generateRecommendation = async (
     - Keep the tone inspiring and helpful.
     - Key aspects to make sure to cover: Climate preference, Political tensions, cultural interests, budget hints, and any travel patterns you can infer from their history.
     - Keep the response concise and focused on the recommendation. Avoid unnecessary explanations or justifications.
-    - Use Markdown formatting for better readability, especially for the itinerary section.
+    - Response MUST be structured as VALID JSON.
+    - Use Markdown formatting for better readability only for the string value parts.
+    - Fetch a picture using a Tool and parse the information according to the Response Format.
 
     Response Format:
+    {
+    Country_Image: {
+      image_url: string,
+      photographer_name: string, 
+      photographer_link: string
+    }
     Country: [Recommended Country]
     Cities: [Recommended Cities]
     Activities: [Suggested Activities or Itinerary]
-    Timeline: [Well curated daily itinerary with activities, dining, and sightseeing suggestions, with exact time planning]
-    Summary: [Bullet point of Country, Cities, Activities]
-
+    Timeline: [Well curated daily itinerary]
+    Summary: [Country, Cities, Activities]
+    }
+    
     TimeLine should be in the format:
     Day #:
       - Morning: [Activity]
@@ -116,6 +128,7 @@ ${currentRequest}
     messages: messages,
     stream: false,
     systemPrompts: [personaAndHistoryAndGuidelines],
+    tools: [getImagesTool],
   });
 
   return response;

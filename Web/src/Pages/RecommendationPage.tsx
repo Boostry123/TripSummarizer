@@ -1,11 +1,17 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import ReactMarkdown from "react-markdown";
-import { getRecommendation } from "@/Apis/chatService";
-import { useRecommendationStore } from "@/store/recommendationStore";
-import Card from "@/Components/Common/Card";
 import { HiSparkles, HiTrash } from "react-icons/hi";
+//API
+import { getRecommendation } from "@/Apis/chatService";
+//Store
+import { useRecommendationStore } from "@/store/recommendationStore";
+//Component
+import Card from "@/Components/Common/Card";
+import ImageContainer from "@/Components/Images/ImageContainer";
+//Helper
+import agentResponseToJson from "@/Helper/agentResponseToJson";
 
 const RecommendationPage: React.FC = () => {
   const location = useLocation();
@@ -66,8 +72,12 @@ const RecommendationPage: React.FC = () => {
         navigate("/travel-log", { replace: true });
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialMessage, lastInitialMessage, history.length, navigate]);
+
+  const recommendationToJson = useMemo(
+    () => agentResponseToJson(recommendation),
+    [recommendation],
+  );
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -101,7 +111,30 @@ const RecommendationPage: React.FC = () => {
             </div>
           ) : recommendation ? (
             <div className="prose prose-slate dark:prose-invert max-w-none text-lg leading-relaxed text-brand-text">
-              <ReactMarkdown>{recommendation}</ReactMarkdown>
+              {recommendationToJson.imageUrl ? (
+                <ImageContainer
+                  URL={recommendationToJson.imageUrl}
+                  user={recommendationToJson.imageUser}
+                />
+              ) : (
+                "No image"
+              )}
+
+              <ReactMarkdown>
+                {`Country: ${recommendationToJson.remainingData.Country}`}
+              </ReactMarkdown>
+              <ReactMarkdown>
+                {`Cities: ${recommendationToJson.remainingData.Cities}`}
+              </ReactMarkdown>
+              <ReactMarkdown>
+                {`Activities: ${recommendationToJson.remainingData.Activities}`}
+              </ReactMarkdown>
+              <ReactMarkdown>
+                {`TimeLine: ${recommendationToJson.remainingData.Timeline}`}
+              </ReactMarkdown>
+              <ReactMarkdown>
+                {`Summary: ${recommendationToJson.remainingData.Summary}`}
+              </ReactMarkdown>
             </div>
           ) : (
             <div className="flex-1 flex items-center justify-center text-brand-text-muted italic">
