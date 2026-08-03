@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import ReactMarkdown from "react-markdown";
@@ -72,10 +72,12 @@ const RecommendationPage: React.FC = () => {
         navigate("/travel-log", { replace: true });
       }
     }
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [initialMessage, lastInitialMessage, history.length, navigate]);
 
-  const recommendationToJson = agentResponseToJson(recommendation);
+  const recommendationToJson = useMemo(
+    () => agentResponseToJson(recommendation),
+    [recommendation],
+  );
 
   return (
     <div className="container mx-auto px-4 py-8 max-w-6xl">
@@ -117,14 +119,22 @@ const RecommendationPage: React.FC = () => {
               ) : (
                 "No image"
               )}
-              {Object.entries(recommendationToJson.parsedObject).map(
-                (entrie) => {
-                  if (entrie[0] != "Country_Image")
-                    return (
-                      <ReactMarkdown>{`${entrie[0]}: ${entrie[1]}`}</ReactMarkdown>
-                    );
-                },
-              )}
+
+              <ReactMarkdown>
+                {`Country: ${recommendationToJson.remainingData.Country}`}
+              </ReactMarkdown>
+              <ReactMarkdown>
+                {`Cities: ${recommendationToJson.remainingData.Cities}`}
+              </ReactMarkdown>
+              <ReactMarkdown>
+                {`Activities: ${recommendationToJson.remainingData.Activities}`}
+              </ReactMarkdown>
+              <ReactMarkdown>
+                {`TimeLine: ${recommendationToJson.remainingData.Timeline}`}
+              </ReactMarkdown>
+              <ReactMarkdown>
+                {`Summary: ${recommendationToJson.remainingData.Summary}`}
+              </ReactMarkdown>
             </div>
           ) : (
             <div className="flex-1 flex items-center justify-center text-brand-text-muted italic">

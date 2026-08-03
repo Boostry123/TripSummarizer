@@ -24,7 +24,9 @@ const agentResponseToJson = (Res: string | undefined | null) => {
     console.log("Had a problem converting the Recommendation to a json");
   }
 
-  return { imageUrl, imageUser, parsedObject };
+  const { Country_Image, ...remainingData } = parsedObject;
+
+  return { imageUrl, imageUser, remainingData };
 };
 
 export default agentResponseToJson;
