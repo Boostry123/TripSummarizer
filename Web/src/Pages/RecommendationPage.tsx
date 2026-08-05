@@ -80,18 +80,18 @@ const RecommendationPage: React.FC = () => {
   );
 
   return (
-    <div className="container mx-auto px-4 py-8 max-w-6xl">
+    <div className="max-w-5xl mx-auto px-6 py-8">
       <div className="flex items-center justify-between mb-6">
         <div className="flex items-center gap-3">
-          <HiSparkles className="text-3xl text-brand-primary animate-pulse" />
-          <h1 className="text-3xl font-bold text-brand-primary">
+          <HiSparkles className="text-2xl" />
+          <h1 className="text-2xl md:text-3xl font-bold">
             Your AI Travel Recommendations
           </h1>
         </div>
         {recommendation && (
           <button
             onClick={clearHistory}
-            className="flex items-center gap-2 px-4 py-2 text-sm font-medium text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
+            className="flex items-center gap-2 px-3 py-1.5 border rounded text-sm font-medium"
             title="Clear conversation history and start fresh"
           >
             <HiTrash />
@@ -101,16 +101,16 @@ const RecommendationPage: React.FC = () => {
       </div>
 
       <div className="mb-8">
-        <Card className="p-8 min-h-100 flex flex-col bg-white dark:bg-slate-800 border-indigo-100 dark:border-indigo-900/30 shadow-xl shadow-indigo-100/20">
+        <Card>
           {mutation.isPending ? (
-            <div className="flex-1 flex flex-col items-center justify-center">
-              <div className="animate-spin rounded-full h-16 w-16 border-b-4 border-brand-primary"></div>
-              <p className="mt-6 text-xl font-medium text-brand-text-muted">
+            <div className="py-12 text-center space-y-4">
+              <div className="font-bold text-lg">Loading...</div>
+              <p>
                 Curating your next adventure...
               </p>
             </div>
           ) : recommendation ? (
-            <div className="prose prose-slate dark:prose-invert max-w-none text-lg leading-relaxed text-brand-text">
+            <div className="space-y-4">
               {recommendationToJson.imageUrl ? (
                 <ImageContainer
                   URL={recommendationToJson.imageUrl}
@@ -137,27 +137,21 @@ const RecommendationPage: React.FC = () => {
               </ReactMarkdown>
             </div>
           ) : (
-            <div className="flex-1 flex items-center justify-center text-brand-text-muted italic">
+            <div className="py-8 text-center italic">
               Click the button below to generate a tailored recommendation.
             </div>
           )}
         </Card>
       </div>
 
-      <form
-        onSubmit={handleGenerate}
-        className="space-y-6 bg-soft-accent dark:bg-slate-800/50 p-6 rounded-2xl border border-slate-200 dark:border-slate-700"
-      >
+      <form onSubmit={handleGenerate} className="space-y-4 p-6 border rounded-xl">
         <div>
-          <label
-            htmlFor="adjustment"
-            className="block text-sm font-bold text-brand-text-muted mb-2 ml-1"
-          >
+          <label htmlFor="adjustment" className="block text-sm font-bold mb-2">
             Refine your preferences
           </label>
           <textarea
             id="adjustment"
-            className="w-full p-4 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 rounded-xl shadow-sm focus:ring-2 focus:ring-brand-primary/20 focus:border-brand-primary outline-none transition-all resize-none text-brand-text"
+            className="w-full p-3 border rounded-lg resize-none"
             rows={3}
             placeholder='e.g., "I want somewhere tropical", "More focus on history", "Budget-friendly options"'
             value={adjustment}
@@ -167,7 +161,7 @@ const RecommendationPage: React.FC = () => {
         <button
           type="submit"
           disabled={mutation.isPending}
-          className="w-full bg-brand-primary hover:bg-indigo-700 text-white font-bold py-4 px-6 rounded-xl transition-all transform hover:scale-[1.01] active:scale-[0.99] disabled:opacity-50 shadow-lg shadow-indigo-500/30 flex items-center justify-center gap-2"
+          className="w-full py-3 border rounded-lg font-bold flex items-center justify-center gap-2"
         >
           {mutation.isPending ? (
             "Thinking..."

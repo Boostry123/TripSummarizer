@@ -23,17 +23,15 @@ export const useAuth = () => {
   // Query to fetch the user profile if we have a token but no user in store
   const { data: profileData, isLoading: isLoadingProfile } = useQuery({
     queryKey: ["user", token],
-    queryFn: () => authService.getCurrentUser(),
+    queryFn: async () => {
+      const response = await authService.getCurrentUser();
+      const userData = response.user;
+      setUser(userData);
+      return { user: userData };
+    },
     enabled: !!token && !storeUser,
     staleTime: Infinity, // Profile doesn't change often
   });
-
-  // Sync profile data to store when fetched
-  useEffect(() => {
-    if (profileData?.user && !storeUser) {
-      setUser(profileData.user);
-    }
-  }, [profileData, storeUser, setUser]);
 
   // Check if token needs refresh
   useEffect(() => {

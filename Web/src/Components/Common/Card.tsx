@@ -22,8 +22,7 @@ const Card: React.FC<CardProps> = ({
     large: "p-10 md:p-12",
   };
 
-  const baseStyles =
-    "bg-white dark:bg-slate-800 rounded-3xl border border-slate-100 dark:border-slate-700 shadow-sm";
+  const baseStyles = "bg-primary-1 rounded-3xl border";
   const hoverStyles = hoverable
     ? "hover:shadow-md transition-shadow cursor-default"
     : "";

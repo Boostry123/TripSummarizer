@@ -1,4 +1,3 @@
-import { useMobile } from "@/hooks/useMobile";
 import Card from "@/Components/Common/Card";
 import {
   HiPencilAlt,
@@ -10,8 +9,6 @@ import {
 } from "react-icons/hi";
 
 const FeaturesPage = () => {
-  const isMobile = useMobile();
-
   const features = [
     {
       title: "Detailed Travel Logs",
@@ -52,28 +49,26 @@ const FeaturesPage = () => {
   ];
 
   return (
-    <div className="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans">
-      <main className="max-w-7xl mx-auto px-6 py-12 md:py-20">
-        <div className="text-center mb-16">
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-6 tracking-tight">
+    <div>
+      <main className="max-w-7xl mx-auto px-6 py-12">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl md:text-5xl font-bold mb-4">
             Powerful Features
           </h2>
-          <p className="text-lg text-slate-600 dark:text-slate-400 max-w-2xl mx-auto">
+          <p className="text-base max-w-2xl mx-auto">
             Everything you need to capture your travel DNA and discover your
             next perfect adventure.
           </p>
         </div>
 
-        <div
-          className={`grid ${isMobile ? "grid-cols-1" : "grid-cols-2 lg:grid-cols-3"} gap-8`}
-        >
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {features.map((f, i) => (
-            <Card key={i} hoverable>
-              <div className="text-4xl mb-4 text-indigo-600 dark:text-indigo-400">
+            <Card key={i}>
+              <div className="text-3xl mb-3">
                 {f.icon}
               </div>
-              <h3 className="text-xl font-bold mb-3">{f.title}</h3>
-              <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
+              <h3 className="text-xl font-bold mb-2">{f.title}</h3>
+              <p className="text-sm leading-relaxed">
                 {f.description}
               </p>
             </Card>

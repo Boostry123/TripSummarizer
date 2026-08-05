@@ -15,7 +15,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onToggle }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     setError(null);
 
@@ -32,12 +32,9 @@ const LoginForm: React.FC<LoginFormProps> = ({ onToggle }) => {
   };
 
   return (
-    <div className="space-y-6 animate-in fade-in slide-in-from-bottom-4">
+    <div>
       <div className="text-center">
         <h2 className="text-3xl font-extrabold mb-2">Welcome Back</h2>
-        <p className="text-slate-500 text-sm">
-          Please enter your details to sign in.
-        </p>
       </div>
 
       {error && (
@@ -48,14 +45,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onToggle }) => {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium mb-1.5 ml-1">Email</label>
+          <label className="font-bold p-2">Email</label>
           <div className="relative">
             <HiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg" />
             <input
               type="email"
               required
               disabled={isLoggingIn}
-              className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all disabled:opacity-50"
+              className="w-full border py-3.5 rounded-xl pl-11 font-bold"
               placeholder="name@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -64,16 +61,14 @@ const LoginForm: React.FC<LoginFormProps> = ({ onToggle }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1.5 ml-1">
-            Password
-          </label>
+          <label className="font-bold m-2">Password</label>
           <div className="relative">
             <HiLockClosed className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg" />
             <input
               type="password"
               required
               disabled={isLoggingIn}
-              className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all disabled:opacity-50"
+              className="w-full border py-3.5 rounded-xl pl-11 font-bold"
               placeholder="••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -84,13 +79,13 @@ const LoginForm: React.FC<LoginFormProps> = ({ onToggle }) => {
         <button
           type="submit"
           disabled={isLoggingIn}
-          className="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+          className="w-full border rounded-xl flex  justify-center py-3.5 font-bold text-2xl hover:bg-primary-0 transition-colors duration-200 cursor-pointer"
         >
           {isLoggingIn ? (
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-white/30 border-t-primary-2 rounded-full animate-spin" />
           ) : (
             <>
-              Sign In <HiArrowRight />
+              <HiArrowRight />
             </>
           )}
         </button>
@@ -102,7 +97,7 @@ const LoginForm: React.FC<LoginFormProps> = ({ onToggle }) => {
           <button
             onClick={onToggle}
             disabled={isLoggingIn}
-            className="font-bold text-indigo-600 hover:text-indigo-700 transition-colors disabled:opacity-50"
+            className="text-black font-bold cursor-pointer"
           >
             Sign up for free
           </button>
