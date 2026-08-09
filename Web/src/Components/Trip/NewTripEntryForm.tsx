@@ -49,7 +49,7 @@ const NewTripEntryForm = (props: entryProps) => {
               </h3>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2">
+                  <label className="block text-sm font-bold mb-2">
                     Where do you want to go?
                   </label>
                   <input
@@ -64,9 +64,7 @@ const NewTripEntryForm = (props: entryProps) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">
-                    When are you thinking?
-                  </label>
+                  <label className="block text-sm font-bold mb-2">When?</label>
                   <input
                     type="date"
                     className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
@@ -80,7 +78,7 @@ const NewTripEntryForm = (props: entryProps) => {
 
               <button
                 onClick={nextStep}
-                className="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all flex items-center justify-center text-xl"
+                className="w-full flex justify-center bg-primary-3 rounded p-3 text-primary-1 hover:bg-primary-4 transition-colors cursor-pointer"
               >
                 <HiArrowRight />
               </button>
@@ -95,7 +93,7 @@ const NewTripEntryForm = (props: entryProps) => {
               </h3>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2">
+                  <label className="block text-sm font-bold mb-2">
                     Duration
                   </label>
                   <input
@@ -110,7 +108,7 @@ const NewTripEntryForm = (props: entryProps) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">
+                  <label className="block text-sm font-bold mb-2">
                     Budget Range
                   </label>
                   <select

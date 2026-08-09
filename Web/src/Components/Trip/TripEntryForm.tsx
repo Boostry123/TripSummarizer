@@ -116,7 +116,7 @@ const TripEntryForm = (props: entryProps) => {
               </h3>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2">
+                  <label className="block text-sm font-bold mb-2">
                     Country
                   </label>
                   <input
@@ -131,9 +131,7 @@ const TripEntryForm = (props: entryProps) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">
-                    Cities
-                  </label>
+                  <label className="block text-sm font-bold mb-2">Cities</label>
                   <div className="flex gap-2 mb-2">
                     <input
                       type="text"
@@ -141,11 +139,11 @@ const TripEntryForm = (props: entryProps) => {
                       placeholder="e.g. Tokyo"
                       value={currentCity}
                       onChange={(e) => setCurrentCity(e.target.value)}
-                      onKeyPress={(e) => e.key === "Enter" && addCity()}
+                      onKeyDown={(e) => e.key === "Enter" && addCity()}
                     />
                     <button
-                      onClick={addCity}
-                      className="bg-indigo-600 text-white px-4 rounded-xl hover:bg-indigo-700 transition-all flex items-center justify-center"
+                      onClick={addLike}
+                      className="bg-primary-3 rounded p-3 text-primary-1 hover:bg-primary-4 transition-colors cursor-pointer"
                     >
                       <HiPlus />
                     </button>
@@ -169,12 +167,12 @@ const TripEntryForm = (props: entryProps) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">
+                  <label className="block text-sm font-bold mb-2 indicator">
                     Travel Date
                   </label>
                   <input
                     type="date"
-                    className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                    className="w-full p-4 rounded-full border border-slate-200 dark:border-slate-600 outline-none"
                     value={formData.travel_date}
                     onChange={(e) =>
                       setFormData({ ...formData, travel_date: e.target.value })
@@ -190,7 +188,7 @@ const TripEntryForm = (props: entryProps) => {
                   !formData.travel_date
                 }
                 onClick={nextStep}
-                className="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all disabled:opacity-50 flex items-center justify-center text-xl"
+                className="w-full flex justify-center bg-primary-3 rounded p-3 text-primary-1 hover:bg-primary-4 transition-colors cursor-pointer"
               >
                 <HiArrowRight />
               </button>
@@ -257,7 +255,7 @@ const TripEntryForm = (props: entryProps) => {
                     placeholder="e.g. Amazing street food"
                     value={currentLike}
                     onChange={(e) => setCurrentLike(e.target.value)}
-                    onKeyPress={(e) => e.key === "Enter" && addLike()}
+                    onKeyDown={(e) => e.key === "Enter" && addLike()}
                   />
                   <button
                     onClick={addLike}
@@ -295,7 +293,7 @@ const TripEntryForm = (props: entryProps) => {
                     placeholder="e.g. Too crowded in the metro"
                     value={currentHate}
                     onChange={(e) => setCurrentHate(e.target.value)}
-                    onKeyPress={(e) => e.key === "Enter" && addHate()}
+                    onKeyDown={(e) => e.key === "Enter" && addHate()}
                   />
                   <button
                     onClick={addHate}
