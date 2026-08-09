@@ -121,7 +121,7 @@ const TripEntryForm = (props: entryProps) => {
                   </label>
                   <input
                     type="text"
-                    className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                    className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-amber-400 transition-all"
                     placeholder="e.g. Japan"
                     value={formData.country}
                     onChange={(e) =>
@@ -135,14 +135,14 @@ const TripEntryForm = (props: entryProps) => {
                   <div className="flex gap-2 mb-2">
                     <input
                       type="text"
-                      className="flex-1 p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                      className="flex-1 p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-amber-400 transition-all"
                       placeholder="e.g. Tokyo"
                       value={currentCity}
                       onChange={(e) => setCurrentCity(e.target.value)}
                       onKeyDown={(e) => e.key === "Enter" && addCity()}
                     />
                     <button
-                      onClick={addLike}
+                      onClick={addCity}
                       className="bg-primary-3 rounded p-3 text-primary-1 hover:bg-primary-4 transition-colors cursor-pointer"
                     >
                       <HiPlus />
@@ -150,10 +150,7 @@ const TripEntryForm = (props: entryProps) => {
                   </div>
                   <div className="flex flex-wrap gap-2">
                     {formData.city.map((item, i) => (
-                      <span
-                        key={i}
-                        className="bg-indigo-50 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 px-3 py-1.5 rounded-lg text-sm flex items-center gap-2 border border-indigo-100 dark:border-indigo-800/30"
-                      >
+                      <span key={i} className="floating">
                         {item}
                         <button
                           onClick={() => removeCity(i)}
@@ -188,7 +185,7 @@ const TripEntryForm = (props: entryProps) => {
                   !formData.travel_date
                 }
                 onClick={nextStep}
-                className="w-full flex justify-center bg-primary-3 rounded p-3 text-primary-1 hover:bg-primary-4 transition-colors cursor-pointer"
+                className="next-step"
               >
                 <HiArrowRight />
               </button>
@@ -220,16 +217,13 @@ const TripEntryForm = (props: entryProps) => {
                   : `You rated it ${formData.rating} out of 5`}
               </p>
               <div className="flex gap-4">
-                <button
-                  onClick={prevStep}
-                  className="flex-1 border-2 border-slate-200 dark:border-slate-700 py-4 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center text-xl"
-                >
+                <button onClick={prevStep} className="prev-step">
                   <HiArrowLeft />
                 </button>
                 <button
                   disabled={formData.rating === 0}
                   onClick={nextStep}
-                  className="flex-1 bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all disabled:opacity-50 flex items-center justify-center text-xl"
+                  className="next-step"
                 >
                   <HiArrowRight />
                 </button>
@@ -245,13 +239,13 @@ const TripEntryForm = (props: entryProps) => {
               </h3>
 
               <div className="space-y-4">
-                <label className="block text-sm font-medium">
+                <label className="block text-sm font-bold">
                   What did you love?
                 </label>
                 <div className="flex gap-2">
                   <input
                     type="text"
-                    className="flex-1 p-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500"
+                    className="flex-1 p-3 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-amber-400"
                     placeholder="e.g. Amazing street food"
                     value={currentLike}
                     onChange={(e) => setCurrentLike(e.target.value)}
@@ -259,17 +253,14 @@ const TripEntryForm = (props: entryProps) => {
                   />
                   <button
                     onClick={addLike}
-                    className="bg-emerald-500 text-white px-4 rounded-xl hover:bg-emerald-600 transition-all flex items-center justify-center"
+                    className="bg-primary-3 rounded p-3 text-primary-1 hover:bg-primary-4 transition-colors cursor-pointer"
                   >
                     <HiPlus />
                   </button>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {formData.likes.map((item, i) => (
-                    <span
-                      key={i}
-                      className="bg-emerald-100 dark:bg-emerald-900/30 text-emerald-700 dark:text-emerald-400 px-3 py-1 rounded-full text-sm flex items-center gap-2"
-                    >
+                    <span key={i} className="floating">
                       {item}{" "}
                       <button
                         onClick={() => removeLike(i)}
@@ -283,7 +274,7 @@ const TripEntryForm = (props: entryProps) => {
               </div>
 
               <div className="space-y-4">
-                <label className="block text-sm font-medium">
+                <label className="block text-sm font-bold">
                   What could have been better?
                 </label>
                 <div className="flex gap-2">
@@ -297,17 +288,14 @@ const TripEntryForm = (props: entryProps) => {
                   />
                   <button
                     onClick={addHate}
-                    className="bg-rose-500 text-white px-4 rounded-xl hover:bg-rose-600 transition-all flex items-center justify-center"
+                    className="bg-primary-3 rounded p-3 text-primary-1 hover:bg-primary-4 transition-colors cursor-pointer"
                   >
                     <HiPlus />
                   </button>
                 </div>
                 <div className="flex flex-wrap gap-2">
                   {formData.hates.map((item, i) => (
-                    <span
-                      key={i}
-                      className="bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 px-3 py-1 rounded-full text-sm flex items-center gap-2"
-                    >
+                    <span key={i} className="floating">
                       {item}{" "}
                       <button
                         onClick={() => removeHate(i)}
@@ -321,16 +309,10 @@ const TripEntryForm = (props: entryProps) => {
               </div>
 
               <div className="flex gap-4">
-                <button
-                  onClick={prevStep}
-                  className="flex-1 border-2 border-slate-200 dark:border-slate-700 py-4 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center text-xl"
-                >
+                <button onClick={prevStep} className="prev-step">
                   <HiArrowLeft />
                 </button>
-                <button
-                  onClick={nextStep}
-                  className="flex-1 bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all flex items-center justify-center text-xl"
-                >
+                <button onClick={nextStep} className="next-step">
                   <HiArrowRight />
                 </button>
               </div>
@@ -347,7 +329,7 @@ const TripEntryForm = (props: entryProps) => {
                 Tell us more about your experience (optional).
               </p>
               <textarea
-                className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all min-h-37.5"
+                className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-amber-400 transition-all min-h-37.5"
                 placeholder="Write your story here..."
                 value={formData.free_text}
                 onChange={(e) =>
@@ -355,16 +337,13 @@ const TripEntryForm = (props: entryProps) => {
                 }
               />
               <div className="flex gap-4">
-                <button
-                  onClick={prevStep}
-                  className="flex-1 border-2 border-slate-200 dark:border-slate-700 py-4 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center text-xl"
-                >
+                <button onClick={prevStep} className="prev-step">
                   <HiArrowLeft />
                 </button>
                 <button
                   disabled={loading}
                   onClick={handleSave}
-                  className="flex-1 bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-500/20 flex items-center justify-center gap-2"
+                  className="next-step"
                 >
                   {loading ? (
                     <div className="w-6 h-6 border-2 border-white border-t-transparent rounded-full animate-spin"></div>

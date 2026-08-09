@@ -2,6 +2,7 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useMutation } from "@tanstack/react-query";
 import ReactMarkdown from "react-markdown";
+import remarkBreaks from "remark-breaks";
 import { HiSparkles, HiTrash } from "react-icons/hi";
 //API
 import { getRecommendation } from "@/Apis/chatService";
@@ -80,18 +81,12 @@ const RecommendationPage: React.FC = () => {
   );
 
   return (
-    <div className="max-w-5xl mx-auto px-6 py-8">
+    <div className=" bg-primary-0 px-6 py-8">
       <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-3">
-          <HiSparkles className="text-2xl" />
-          <h1 className="text-2xl md:text-3xl font-bold">
-            Your AI Travel Recommendations
-          </h1>
-        </div>
         {recommendation && (
           <button
             onClick={clearHistory}
-            className="flex items-center gap-2 px-3 py-1.5 border rounded text-sm font-medium"
+            className="flex bg-red-400 items-center gap-2 px-3 py-1.5 border rounded text-sm font-medium"
             title="Clear conversation history and start fresh"
           >
             <HiTrash />
@@ -101,57 +96,65 @@ const RecommendationPage: React.FC = () => {
       </div>
 
       <div className="mb-8">
-        <Card>
-          {mutation.isPending ? (
-            <div className="py-12 text-center space-y-4">
-              <div className="font-bold text-lg">Loading...</div>
-              <p>
-                Curating your next adventure...
-              </p>
-            </div>
-          ) : recommendation ? (
-            <div className="space-y-4">
-              {recommendationToJson.imageUrl ? (
+        {mutation.isPending ? (
+          <div className="py-12 text-center space-y-4">
+            <div className="font-bold text-lg">Loading...</div>
+            <p>Curating your next adventure...</p>
+          </div>
+        ) : recommendation ? (
+          <div className="flex flex-col space-y-4 justify-center items-center">
+            {recommendationToJson.imageUrl ? (
+              <div className="flex justify-center">
                 <ImageContainer
                   URL={recommendationToJson.imageUrl}
                   user={recommendationToJson.imageUser}
                 />
-              ) : (
-                "No image"
-              )}
-
-              <ReactMarkdown>
-                {`Country: ${recommendationToJson.remainingData.Country}`}
-              </ReactMarkdown>
-              <ReactMarkdown>
-                {`Cities: ${recommendationToJson.remainingData.Cities}`}
-              </ReactMarkdown>
-              <ReactMarkdown>
-                {`Activities: ${recommendationToJson.remainingData.Activities}`}
-              </ReactMarkdown>
-              <ReactMarkdown>
-                {`TimeLine: ${recommendationToJson.remainingData.Timeline}`}
-              </ReactMarkdown>
-              <ReactMarkdown>
-                {`Summary: ${recommendationToJson.remainingData.Summary}`}
-              </ReactMarkdown>
+              </div>
+            ) : (
+              "No image"
+            )}
+            <div className="prose max-w-prose">
+              <Card>
+                <ReactMarkdown remarkPlugins={[remarkBreaks]}>
+                  {`**Country:** ${recommendationToJson.remainingData.Country}`}
+                </ReactMarkdown>
+                <br />
+                <ReactMarkdown remarkPlugins={[remarkBreaks]}>
+                  {`**Cities:** ${recommendationToJson.remainingData.Cities}`}
+                </ReactMarkdown>
+                <br />
+                <ReactMarkdown remarkPlugins={[remarkBreaks]}>
+                  {`**Activities:** ${recommendationToJson.remainingData.Activities}`}
+                </ReactMarkdown>
+                <br />
+                <ReactMarkdown remarkPlugins={[remarkBreaks]}>
+                  {`**TimeLine:**\n ${recommendationToJson.remainingData.Timeline}`}
+                </ReactMarkdown>
+                <br />
+                <ReactMarkdown remarkPlugins={[remarkBreaks]}>
+                  {`**Summary:** ${recommendationToJson.remainingData.Summary}`}
+                </ReactMarkdown>
+              </Card>
             </div>
-          ) : (
-            <div className="py-8 text-center italic">
-              Click the button below to generate a tailored recommendation.
-            </div>
-          )}
-        </Card>
+          </div>
+        ) : (
+          <div className="py-8 text-center italic">
+            Click the button below to generate a tailored recommendation.
+          </div>
+        )}
       </div>
 
-      <form onSubmit={handleGenerate} className="space-y-4 p-6 border rounded-xl">
+      <form
+        onSubmit={handleGenerate}
+        className="space-y-4 p-6 border rounded-xl bg-primary-1"
+      >
         <div>
           <label htmlFor="adjustment" className="block text-sm font-bold mb-2">
             Refine your preferences
           </label>
           <textarea
             id="adjustment"
-            className="w-full p-3 border rounded-lg resize-none"
+            className="w-full p-3 border rounded-lg resize-none bg-primary-0"
             rows={3}
             placeholder='e.g., "I want somewhere tropical", "More focus on history", "Budget-friendly options"'
             value={adjustment}
@@ -161,7 +164,7 @@ const RecommendationPage: React.FC = () => {
         <button
           type="submit"
           disabled={mutation.isPending}
-          className="w-full py-3 border rounded-lg font-bold flex items-center justify-center gap-2"
+          className="w-full bg-primary-2 py-3 border rounded-lg font-bold flex items-center justify-center gap-2 cursor-pointer"
         >
           {mutation.isPending ? (
             "Thinking..."

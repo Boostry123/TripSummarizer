@@ -319,10 +319,7 @@ const TripDetailsModal: React.FC<TripDetailsModalProps> = ({
                     ? (editedTrip.likes as string[]) || []
                     : trip.likes
                   ).map((item, idx) => (
-                    <span
-                      key={idx}
-                      className="bg-primary-4/20 rounded-lg px-3 py-1 font-semibold flex items-center gap-2 border border-primary-3"
-                    >
+                    <span key={idx} className="floating">
                       {item}
                       {isEditing && (
                         <button

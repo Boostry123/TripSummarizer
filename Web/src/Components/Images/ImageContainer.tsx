@@ -10,8 +10,13 @@ const ImageContainer = (params: imageContainerParams) => {
   const imageUrl = params.URL;
 
   return (
-    <Card>
-      <img src={imageUrl ?? ""} alt="Image" referrerPolicy="no-referrer" />
+    <Card className="flex flex-col justify-center">
+      <img
+        src={imageUrl ?? ""}
+        alt="Image"
+        referrerPolicy="no-referrer"
+        className="max-w-xl"
+      />
       {params.user ? (
         <UnsplashAttribution user={params.user} appName={"TripSummarizer"} />
       ) : (
