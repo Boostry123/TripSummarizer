@@ -2,42 +2,64 @@
 @plugin "@tailwindcss/typography";
 
 @theme {
-  --color-brand-primary: #4f46e5;
-  --color-brand-text: #0f172a;
-  --color-brand-text-muted: #475569;
-  --color-soft-bg: #f8fafc;
-  --color-soft-accent: #f1f5f9;
-  --color-soft-muted: #94a3b8;
-  --color-soft-deep: #1e293b;
+  --color-primary-0: #f8eee3;
+  --color-primary-1: #f1dec9;
+  --color-primary-2: #c8b6a6;
+  --color-primary-3: #a4907c;
+  --color-primary-4: #8d7b68;
+  --font-sans: Tahoma, sans-serif;
 }
 
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-  color-scheme: light dark;
-}
+@layer base {
+  html,
+  body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden;
+  }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-brand-text: #f8fafc;
-    --color-brand-text-muted: #cbd5e1;
-    --color-soft-bg: #0f172a;
-    --color-soft-accent: #1e293b;
-    --color-soft-muted: #64748b;
-    --color-soft-deep: #020617;
+  #root {
+    width: 100%;
+    min-height: 100vh;
+    overflow-x: hidden;
+  }
+
+  input:-webkit-autofill,
+  input:-webkit-autofill:hover,
+  input:-webkit-autofill:focus,
+  textarea:-webkit-autofill,
+  textarea:-webkit-autofill:hover,
+  textarea:-webkit-autofill:focus,
+  select:-webkit-autofill,
+  select:-webkit-autofill:hover,
+  select:-webkit-autofill:focus {
+    /* Changes the background fill color */
+    -webkit-box-shadow: 0 0 0px 1000px var(--color-primary-0) inset !important;
+
+    /* Changes the text color inside the autofilled input */
+    -webkit-text-fill-color: black !important;
   }
 }
 
-body {
-  margin: 0;
-  min-height: 100vh;
-  background-color: var(--color-soft-bg);
-  color: var(--color-brand-text);
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+input[type="date"]::-webkit-calendar-picker-indicator {
+  background-color: var(--color-primary-3);
+  border-radius: 100%;
+  padding: 1%;
+  cursor: pointer;
 }
 
-#root {
-  width: 100%;
+/* Step Buttons */
+
+@layer components {
+  .next-step {
+    @apply flex flex-1 w-full justify-center bg-primary-3 rounded p-3 text-primary-1 hover:bg-primary-4 transition-colors cursor-pointer;
+  }
+  .prev-step {
+    @apply flex flex-1 w-full justify-center bg-primary-2 rounded p-3 text-primary-3 hover:bg-primary-4 transition-colors cursor-pointer;
+  }
+  .floating {
+    @apply bg-primary-4/20 rounded-lg px-3 py-1 font-semibold flex items-center gap-2 border border-primary-3;
+  }
 }

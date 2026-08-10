@@ -25,12 +25,18 @@ export const signup = async (
   if (error) {
     return { error: { status: error.status || 400, message: error.message } };
   }
+  if (!data.user) {
+    return {
+      error: { status: 400, message: "User not created" },
+    };
+  }
+  const userProfile = await getCurrentUser(data.user.id);
 
   return {
     user: {
       id: data.user?.id || "",
       email: data.user?.email || "",
-      name: data.user?.user_metadata?.name || "",
+      name: userProfile.user?.name || "",
     },
     token: data.session?.access_token,
     refreshToken: data.session?.refresh_token,
@@ -50,11 +56,13 @@ export const login = async (
     return { error: { status: error.status || 400, message: error.message } };
   }
 
+  const userProfile = await getCurrentUser(data.user.id);
+
   return {
     user: {
       id: data.user?.id || "",
       email: data.user?.email || "",
-      name: data.user?.user_metadata?.name || "",
+      name: userProfile.user?.name || "",
     },
     token: data.session?.access_token,
     refreshToken: data.session?.refresh_token,
@@ -71,12 +79,18 @@ export const refresh = async (
   if (error) {
     return { error: { status: error.status || 400, message: error.message } };
   }
+  if (!data.user) {
+    return {
+      error: { status: 400, message: "User not created" },
+    };
+  }
+  const userProfile = await getCurrentUser(data.user.id);
 
   return {
     user: {
       id: data.user?.id || "",
       email: data.user?.email || "",
-      name: data.user?.user_metadata?.name || "",
+      name: userProfile.user?.name || "",
     },
     token: data.session?.access_token,
     refreshToken: data.session?.refresh_token,
@@ -94,7 +108,6 @@ export const logout = async (): Promise<{
 };
 
 export const getCurrentUser = async (
-  token: string,
   userId: string,
 ): Promise<AuthServiceResponse> => {
   try {

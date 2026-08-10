@@ -9,6 +9,9 @@ interface AuthState {
   token: string | null;
   refreshToken: string | null;
   expiresAt: number | null;
+}
+
+interface AuthActions {
   login: (user: User, token: string, refreshToken: string) => void;
   signup: (user: User, token: string, refreshToken: string) => void;
   signout: () => void;
@@ -18,7 +21,7 @@ interface AuthState {
 
 const REFRESH_TIMEOUT = 45 * 60 * 1000; // 45 minutes
 
-export const useAuthStore = create<AuthState>()(
+export const useAuthStore = create<AuthState & AuthActions>()(
   persist(
     (set, get) => ({
       user: null,

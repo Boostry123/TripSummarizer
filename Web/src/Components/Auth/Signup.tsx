@@ -16,7 +16,7 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.SubmitEvent) => {
     e.preventDefault();
     setError(null);
 
@@ -49,16 +49,14 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
 
       <form onSubmit={handleSubmit} className="space-y-4">
         <div>
-          <label className="block text-sm font-medium mb-1.5 ml-1">
-            Full Name
-          </label>
+          <label className="font-bold m-2">Full Name</label>
           <div className="relative">
             <HiUser className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg" />
             <input
               type="text"
               required
               disabled={isSigningUp}
-              className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all disabled:opacity-50"
+              className="w-full pl-11 border rounded-xl py-3.5 font-bold text-black"
               placeholder="John Doe"
               value={name}
               onChange={(e) => setName(e.target.value)}
@@ -67,14 +65,14 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1.5 ml-1">Email</label>
+          <label className="font-bold m-2">Email</label>
           <div className="relative">
             <HiMail className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg" />
             <input
               type="email"
               required
               disabled={isSigningUp}
-              className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all disabled:opacity-50"
+              className="w-full pl-11 border rounded-xl py-3.5 font-bold"
               placeholder="name@example.com"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -83,16 +81,14 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
         </div>
 
         <div>
-          <label className="block text-sm font-medium mb-1.5 ml-1">
-            Password
-          </label>
+          <label className="font-bold m-2">Password</label>
           <div className="relative">
             <HiLockClosed className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-400 text-lg" />
             <input
               type="password"
               required
               disabled={isSigningUp}
-              className="w-full pl-11 pr-4 py-3.5 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all disabled:opacity-50"
+              className="bg-primary-0 w-full pl-11 border rounded-xl py-3.5 font-bold"
               placeholder="Min. 8 characters"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
@@ -103,13 +99,13 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
         <button
           type="submit"
           disabled={isSigningUp}
-          className="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-lg shadow-indigo-500/20 flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+          className="w-full border rounded-xl flex  justify-center py-3.5 font-bold text-2xl hover:bg-primary-0 transition-colors duration-200 cursor-pointer"
         >
           {isSigningUp ? (
-            <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+            <div className="w-5 h-5 border-2 border-white/30 border-t-primary-2 rounded-full animate-spin" />
           ) : (
             <>
-              Create Account <HiArrowRight />
+              <HiArrowRight />
             </>
           )}
         </button>
@@ -121,7 +117,7 @@ const Signup: React.FC<SignupProps> = ({ onToggle }) => {
           <button
             onClick={onToggle}
             disabled={isSigningUp}
-            className="font-bold text-indigo-600 hover:text-indigo-700 transition-colors disabled:opacity-50"
+            className="text-black font-bold cursor-pointer"
           >
             Sign in here
           </button>

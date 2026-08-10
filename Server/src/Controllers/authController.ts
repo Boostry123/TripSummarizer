@@ -108,7 +108,7 @@ export const getCurrentUser = async (req: AuthRequest, res: Response) => {
       return res.status(401).json({ error: "Not authenticated" });
     }
 
-    const result = await authService.getCurrentUser(req.token, req.user.id);
+    const result = await authService.getCurrentUser(req.user.id);
 
     if (result.error) {
       return res

@@ -49,12 +49,12 @@ const NewTripEntryForm = (props: entryProps) => {
               </h3>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2">
+                  <label className="block text-sm font-bold mb-2">
                     Where do you want to go?
                   </label>
                   <input
                     type="text"
-                    className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                    className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-amber-400 transition-all"
                     placeholder="e.g. Iceland"
                     value={formData.Location}
                     onChange={(e) =>
@@ -64,12 +64,10 @@ const NewTripEntryForm = (props: entryProps) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">
-                    When are you thinking?
-                  </label>
+                  <label className="block text-sm font-bold mb-2">When?</label>
                   <input
                     type="date"
-                    className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                    className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-amber-400 transition-all"
                     value={formData.Date}
                     onChange={(e) =>
                       setFormData({ ...formData, Date: e.target.value })
@@ -80,7 +78,7 @@ const NewTripEntryForm = (props: entryProps) => {
 
               <button
                 onClick={nextStep}
-                className="w-full bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all flex items-center justify-center text-xl"
+                className="w-full flex justify-center bg-primary-3 rounded p-3 text-primary-1 hover:bg-primary-4 transition-colors cursor-pointer"
               >
                 <HiArrowRight />
               </button>
@@ -95,12 +93,12 @@ const NewTripEntryForm = (props: entryProps) => {
               </h3>
               <div className="space-y-4">
                 <div>
-                  <label className="block text-sm font-medium mb-2">
+                  <label className="block text-sm font-bold mb-2">
                     Duration
                   </label>
                   <input
                     type="text"
-                    className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all"
+                    className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-amber-400 transition-all"
                     placeholder="e.g. 10 days"
                     value={formData.Duration}
                     onChange={(e) =>
@@ -110,35 +108,26 @@ const NewTripEntryForm = (props: entryProps) => {
                 </div>
 
                 <div>
-                  <label className="block text-sm font-medium mb-2">
+                  <label className="block text-sm font-bold mb-2">
                     Budget Range
                   </label>
                   <select
-                    className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-slate-100 outline-none focus:ring-2 focus:ring-indigo-500 transition-all cursor-pointer"
+                    className="w-full bg-transparent border rounded-xl p-4 focus:ring-2 focus:ring-amber-400"
                     value={formData.Budget}
                     onChange={(e) =>
                       setFormData({ ...formData, Budget: e.target.value })
                     }
                   >
-                    <option value="" className="bg-white dark:bg-slate-800">
+                    <option value="" className="bg-primary-2">
                       No preference
                     </option>
-                    <option
-                      value="Budget"
-                      className="bg-white dark:bg-slate-800"
-                    >
+                    <option value="Budget" className="bg-primary-2">
                       Budget (Minimalist)
                     </option>
-                    <option
-                      value="Moderate"
-                      className="bg-white dark:bg-slate-800"
-                    >
+                    <option value="Moderate" className="bg-primary-2">
                       Moderate (Comfortable)
                     </option>
-                    <option
-                      value="Luxury"
-                      className="bg-white dark:bg-slate-800"
-                    >
+                    <option value="Luxury" className="bg-primary-2">
                       Luxury (Premium)
                     </option>
                   </select>
@@ -146,16 +135,10 @@ const NewTripEntryForm = (props: entryProps) => {
               </div>
 
               <div className="flex gap-4">
-                <button
-                  onClick={prevStep}
-                  className="flex-1 border-2 border-slate-200 dark:border-slate-700 py-4 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center text-xl"
-                >
+                <button onClick={prevStep} className="prev-step">
                   <HiArrowLeft />
                 </button>
-                <button
-                  onClick={nextStep}
-                  className="flex-1 bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all flex items-center justify-center text-xl"
-                >
+                <button onClick={nextStep} className="next-step">
                   <HiArrowRight />
                 </button>
               </div>
@@ -173,7 +156,7 @@ const NewTripEntryForm = (props: entryProps) => {
                 Food, Relaxing)
               </p>
               <textarea
-                className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-indigo-500 transition-all min-h-37.5"
+                className="w-full p-4 rounded-xl border border-slate-200 dark:border-slate-600 bg-transparent outline-none focus:ring-2 focus:ring-amber-400 transition-all min-h-37.5"
                 placeholder="Tell us what you'd love to do..."
                 value={formData.Interests}
                 onChange={(e) =>
@@ -181,17 +164,11 @@ const NewTripEntryForm = (props: entryProps) => {
                 }
               />
               <div className="flex gap-4">
-                <button
-                  onClick={prevStep}
-                  className="flex-1 border-2 border-slate-200 dark:border-slate-700 py-4 rounded-xl font-bold hover:bg-slate-50 dark:hover:bg-slate-700 transition-all flex items-center justify-center text-xl"
-                >
+                <button onClick={prevStep} className="prev-step">
                   <HiArrowLeft />
                 </button>
-                <button
-                  onClick={handleSubmit}
-                  className="flex-1 bg-indigo-600 text-white py-4 rounded-xl font-bold hover:bg-indigo-700 transition-all shadow-xl shadow-indigo-500/20 flex items-center justify-center gap-2"
-                >
-                  <HiCheck className="text-xl" /> Generate Plan
+                <button onClick={handleSubmit} className="next-step">
+                  <HiCheck className="text-xl" />
                 </button>
               </div>
             </div>

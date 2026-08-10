@@ -2,13 +2,13 @@ import { Link } from "react-router-dom";
 
 const AboutPage = () => {
   return (
-    <div className="bg-slate-50 dark:bg-slate-900 text-slate-900 dark:text-slate-100 font-sans">
-      <main className="max-w-4xl mx-auto px-6 py-12 md:py-20">
-        <div className="mb-16">
-          <h2 className="text-4xl md:text-5xl font-extrabold mb-8 tracking-tight">
+    <div>
+      <main className="max-w-4xl mx-auto px-6 py-12">
+        <div className="mb-12">
+          <h2 className="text-3xl md:text-5xl font-bold mb-6">
             About TripSummarizer
           </h2>
-          <div className="space-y-6 text-lg text-slate-600 dark:text-slate-400 leading-relaxed">
+          <div className="space-y-4 text-base leading-relaxed">
             <p>
               TripSummarizer was born out of a simple problem: we travel a lot,
               but we often forget the small details that make or break an
@@ -21,7 +21,7 @@ const AboutPage = () => {
               logging your experiences in detail, you provide the context needed
               for truly personalized travel intelligence.
             </p>
-            <h3 className="text-2xl font-bold text-slate-900 dark:text-slate-100 pt-4">
+            <h3 className="text-2xl font-bold pt-4 mb-2">
               The AI Advantage
             </h3>
             <p>
@@ -35,20 +35,19 @@ const AboutPage = () => {
           </div>
         </div>
 
-        <div className="p-8 bg-indigo-600 rounded-3xl text-white text-center">
-          <h3 className="text-2xl font-bold mb-4 text-white">
+        <div className="p-8 border rounded-xl text-center space-y-4">
+          <h3 className="text-2xl font-bold">
             Ready to start your journey?
           </h3>
-          <p className="mb-8 opacity-90">
+          <p>
             Begin building your travel profile today and never waste a vacation
             again.
           </p>
-          <Link
-            to="/auth"
-            className="inline-block bg-white text-indigo-600 px-8 py-3 rounded-full font-bold hover:bg-indigo-50 transition-colors"
-          >
-            Log Your First Trip
-          </Link>
+          <div className="pt-2">
+            <Link to="/auth" className="inline-block px-6 py-2 border rounded-lg font-bold">
+              Log Your First Trip
+            </Link>
+          </div>
         </div>
       </main>
     </div>
