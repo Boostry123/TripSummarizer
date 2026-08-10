@@ -1,7 +1,8 @@
 name: PR CI Pipeline
 
 on:
-  pull_request: branches:["main"]
+  pull_request: 
+  branches: ["main"]
 
 jobs:
   test-and-build:
