@@ -1,7 +1,7 @@
 name: PR CI Pipeline
 
 on:
-  pull_request: 
+  pull_request:
     branches: ["main"]
 
 jobs:
@@ -9,40 +9,39 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
 
-      name: Checkout repo
-      uses: actions/checkout@4
-
-      nameL: Set up Node.js
-      uses: actions/setup-node@v4
-      with:
-        node-version: "20"
-        cache: "npm"
-        cache-dependency-path: |
-          Web/package-lock.json
-          Server/package-lock.josn
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+          cache: "npm"
+          cache-dependency-path: |
+            Web/package-lock.json
+            Server/package-lock.json
 
       # --WEB STEPS--
 
-      name: Install Web deps
-      working-directory: ./Web
-      run: npm ci
+      - name: Install Web deps
+        working-directory: ./Web
+        run: npm ci
 
-      name: Validate Web (lint, typecheck, build)
-      working-directory: ./Web
-      run: npm run validate
+      - name: Validate Web (lint, typecheck, build)
+        working-directory: ./Web
+        run: npm run validate
 
       # --SERVER STEPS--
 
-      name: Install Server deps
-      working-directory: ./Server
-      run: npm ci
+      - name: Install Server deps
+        working-directory: ./Server
+        run: npm ci
 
-      name: Run Server Tests
-      working-directory: ./Server
-      run: npm run test -- --run
+      - name: Run Server Tests
+        working-directory: ./Server
+        run: npm run test -- --run
 
       #-- DOCKER VERIFICATION--
       # --test comment --
-      name: Test Docker Compose Build
-      run: docker compose -f docker-compose.yml build
+      - name: Test Docker Compose Build
+        run: docker compose -f docker-compose.yml build
