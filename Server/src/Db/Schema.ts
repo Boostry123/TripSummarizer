@@ -5,7 +5,10 @@ import {
   smallint,
   date,
   timestamp,
+  jsonb,
 } from "drizzle-orm/pg-core";
+
+import { Messages } from "../Types/history.js";
 
 //Profiles Table
 export const profiles = pgTable("profiles", {
@@ -35,9 +38,27 @@ export const trips = pgTable("trips", {
     .notNull(),
 });
 
+export const history = pgTable("history", {
+  id: uuid("id").primaryKey().defaultRandom().notNull(),
+  user_id: uuid("user_id")
+    .references(() => profiles.id, { onDelete: "cascade" })
+    .notNull(),
+  chat_history: jsonb("chat_history").$type<Messages>().default([]).notNull(),
+  created_at: timestamp("created_at", { withTimezone: true, mode: "string" })
+    .defaultNow()
+    .notNull(),
+  updated_at: timestamp("updated_at", {
+    withTimezone: true,
+    mode: "string",
+  }).defaultNow(),
+});
+
 // TypeScript inference types for query output and insertion
 export type Profile = typeof profiles.$inferSelect;
 export type NewProfile = typeof profiles.$inferInsert;
 
 export type Trip = typeof trips.$inferSelect;
 export type NewTrip = typeof trips.$inferInsert;
+
+export type History = typeof history.$inferSelect;
+export type NewHistory = typeof history.$inferInsert;
