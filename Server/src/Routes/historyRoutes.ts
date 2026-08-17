@@ -9,4 +9,6 @@ historyRoutes.get("/", authenticate, historyController.getHistory);
 
 historyRoutes.post("/", authenticate, historyController.insertHistory);
 
+historyRoutes.patch("/", authenticate, historyController.updateHistory);
+
 export default historyRoutes;
