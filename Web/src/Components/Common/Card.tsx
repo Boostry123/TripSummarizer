@@ -24,7 +24,7 @@ const Card: React.FC<CardProps> = ({
 
   const baseStyles = "bg-primary-1 rounded-3xl border";
   const hoverStyles = hoverable
-    ? "hover:shadow-md transition-shadow cursor-default"
+    ? "hover:shadow-md transition-shadow cursor-pointer hover:bg-primary-0"
     : "";
   const paddingStyles = paddingMap[padding];
 
