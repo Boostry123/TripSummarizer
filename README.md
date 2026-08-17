@@ -180,3 +180,8 @@ Both directories contain validation scripts checking TypeScript compilation and 
 ## 📄 Documentation
 
 For full implementation steps, development roadmap checkpoints, and detailed architectural notes, please see the [AGENTS.md](./AGENTS.md) file.
+
+## License
+
+Please refer to the [LICENSE.md](./LICENSE.md) file, as this project is forbidden to be used for commercial use.
+
