@@ -17,3 +17,8 @@ export const getHistory = async (user_id: string) => {
 
   return data as History[];
 };
+
+export const insertHistory = async (H: HistoryInsert) => {
+  const data = await db.insert(history).values(H);
+  return data as History[];
+};
