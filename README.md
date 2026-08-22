@@ -183,4 +183,9 @@ For full implementation steps, development roadmap checkpoints, and detailed arc
 
 ## License
 
+<<<<<<< HEAD
 Please infer to the LICENSE.md file as this project is forbiden to be taken for a commercial use.
+=======
+Please refer to the [LICENSE.md](./LICENSE.md) file, as this project is forbidden to be used for commercial use.
+
+>>>>>>> main
