@@ -54,8 +54,7 @@ export const useAuthStore = create<AuthState & AuthActions>()(
           refreshToken: null,
           expiresAt: null,
         });
-        useRecommendationStore.getState().setRecommendation(null);
-        useRecommendationStore.getState().setLastInitialMessage(null);
+        useRecommendationStore.getState().clearHistory();
         localStorage.clear();
       },
 

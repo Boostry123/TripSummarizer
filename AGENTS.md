@@ -39,19 +39,22 @@ TripSummarizer is an AI-driven travel logging web application. Users log trips, 
 ## Database Schema (PostgreSQL / Drizzle)
 
 - `profiles`: Linked 1:1 with `auth.users` via triggers.
-  - Fields: `id` (uuid/PK), `email` (text/unique), `name`, `phone_number`, `updated_at`.
+  - Fields: `id` (uuid/PK), `email` (text/unique), `name`, `updated_at`.
   - RLS: Users can only `SELECT` and `UPDATE` where `auth.uid() = id`.
 - `trips`: User travel logs.
-  - Fields: `id` (uuid/PK), `user_id` (uuid/FK), `country`, `city` (text[]), `travel_date`, `rating` (smallint 1-5), `likes` (text[]), `hates` (text[]), `free_text`.
+  - Fields: `id` (uuid/PK), `user_id` (uuid/FK), `country`, `city` (text[]), `travel_date`, `rating` (smallint 1-5), `likes` (text[]), `hates` (text[]), `free_text`, `created_at`.
+  - RLS: Full CRUD access ONLY where `auth.uid() = user_id`.
+- `history`: AI recommendation chat history sessions.
+  - Fields: `id` (uuid/PK), `user_id` (uuid/FK), `chat_history` (jsonb/Message[]), `created_at` (timestamp with timezone), `updated_at` (timestamp with timezone).
   - RLS: Full CRUD access ONLY where `auth.uid() = user_id`.
 
 ## Testing & Validation
 
 - **Server Tests:** Vitest. Run using `npm run test` (watch mode) or `npm test -- --run` in `/Server`.
-- **Key Test Areas:** Focus tests on Services (mocking `getSupabaseClient`) and Zod Validation schemas.
+- **Key Test Areas:** Focus tests on Services and Zod Validation schemas.
 - **CI/Validation:** Use `npm run validate` (runs Lint + TS strict check + Build).
 
 ## Current Development Focus
 
-- [x] Infrastructure, Auth, DB Schema, AI agent and Trip Entry UI.
+- [x] Infrastructure, Auth, DB Schema, AI agent, Trip Entry UI, and Recommendation History Persistence.
 - [ ] **Next:** Polish & Visual Refining.

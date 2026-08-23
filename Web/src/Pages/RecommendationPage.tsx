@@ -27,8 +27,13 @@ const RecommendationPage: React.FC = () => {
   const allHistory = useHistory();
   const { mutate, isPending } = useGenerateRecommendation();
 
-  const { recommendation, clearHistory, setRecommendation, addToHistory } =
-    useRecommendationStore();
+  const {
+    recommendation,
+    clearHistory,
+    setRecommendation,
+    addToHistory,
+    setRecommendationId,
+  } = useRecommendationStore();
 
   const [adjustment, setAdjustment] = useState("");
   const [newTripOpen, setNewTripOpen] = useState(false);
@@ -38,6 +43,11 @@ const RecommendationPage: React.FC = () => {
 
   const handleGenerate = (e: React.SubmitEvent) => {
     e.preventDefault();
+    if (adjustment.trim() === "") {
+      setAdjustment("");
+      return;
+    }
+
     mutate(adjustment);
     setAdjustment("");
   };
@@ -51,7 +61,7 @@ const RecommendationPage: React.FC = () => {
     clearHistory();
     const chosenRecommendation =
       recentTrip.chat_history[recentTrip.chat_history.length - 1].content;
-
+    setRecommendationId(recentTrip.id);
     setRecommendation(chosenRecommendation);
 
     recentTrip.chat_history.map((h) => {
@@ -80,7 +90,7 @@ const RecommendationPage: React.FC = () => {
         })
       : "No history";
     return results;
-  }, [allHistory.isLoading]);
+  }, [allHistory.historyData]);
 
   return (
     <div className="flex flex-col bg-primary-0 px-6 py-8 min-h-screen">
@@ -223,9 +233,7 @@ const RecommendationPage: React.FC = () => {
             ) : (
               <>
                 <HiSparkles />
-                {recommendation
-                  ? "Update Recommendation"
-                  : "Generate Recommendation"}
+                Update Recommendation
               </>
             )}
           </button>

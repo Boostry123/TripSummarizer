@@ -18,4 +18,4 @@ export type TripUpdate = Partial<NewTrip>;
 
 export type History = DrizzleHistory;
 export type HistoryInsert = NewHistory;
-export type HistoryUpdate = Partial<NewHistory>;
+export type HistoryUpdate = Omit<NewHistory, "created_at">;

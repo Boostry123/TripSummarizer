@@ -19,7 +19,7 @@ export const getHistory = async (user_id: string) => {
 };
 
 export const insertHistory = async (H: HistoryInsert) => {
-  const data = await db.insert(history).values(H);
+  const data = await db.insert(history).values(H).returning();
   return data as History[];
 };
 
@@ -29,10 +29,11 @@ export const updateHistory = async (H: HistoryUpdate) => {
   if (!recId || !user_id) {
     throw new Error("Missing required fields: id or user_id");
   }
+  const updated_at = new Date().toISOString();
 
   const data = await db
     .update(history)
-    .set({ chat_history: H.chat_history })
+    .set({ chat_history: H.chat_history, updated_at: updated_at })
     .where(and(eq(history.id, recId), eq(history.user_id, user_id)))
     .returning();
 

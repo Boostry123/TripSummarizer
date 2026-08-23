@@ -7,8 +7,4 @@ const historyRoutes = Router();
 //Get all history of a specific user by user_id
 historyRoutes.get("/", authenticate, historyController.getHistory);
 
-historyRoutes.post("/", authenticate, historyController.insertHistory);
-
-historyRoutes.patch("/", authenticate, historyController.updateHistory);
-
 export default historyRoutes;

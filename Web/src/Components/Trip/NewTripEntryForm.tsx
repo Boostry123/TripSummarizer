@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { useMobile } from "@/hooks/useMobile";
 import BaseEntryForm from "@/Components/Common/BaseEntryForm";
 import { useGenerateRecommendation } from "@/hooks/useGenerateRecommendation";
+import { useRecommendationStore } from "@/store/recommendationStore";
 //Icons
 import { HiArrowRight, HiArrowLeft, HiCheck } from "react-icons/hi";
 
@@ -14,6 +15,7 @@ const NewTripEntryForm = (props: entryProps) => {
   const isMobile = useMobile();
   const navigate = useNavigate();
   const { mutate } = useGenerateRecommendation();
+  const { clearHistory } = useRecommendationStore();
 
   const initialData = {
     Date: "",
@@ -32,6 +34,8 @@ const NewTripEntryForm = (props: entryProps) => {
     ${formData.Budget ? `Budget: ${formData.Budget}.` : ""}
     ${formData.Interests ? `My interests: ${formData.Interests}.` : ""}
     Please generate a tailored recommendation based on these preferences and my past travel history.`;
+
+    clearHistory();
 
     onClose();
     mutate(formattedMessage);
