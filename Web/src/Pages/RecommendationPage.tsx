@@ -36,6 +36,7 @@ const RecommendationPage: React.FC = () => {
     setRecommendation,
     addToHistory,
     setRecommendationId,
+    isLoading,
   } = useRecommendationStore();
 
   const [adjustment, setAdjustment] = useState("");
@@ -126,7 +127,7 @@ const RecommendationPage: React.FC = () => {
       />
 
       <div className="mb-8 z-1">
-        {isPending ? (
+        {isPending || isLoading ? (
           <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
             <BlobLoader />
             <p>Curating your next adventure...</p>
