@@ -161,7 +161,7 @@ const TravelLogPage = () => {
 
         {/* Modals */}
         {newLogOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 overflow-y-auto">
+          <div className="modal-backdrop overflow-y-auto">
             <div className="w-full max-w-2xl my-auto">
               <TripEntryForm onClose={() => setNewLogOpen(false)} />
             </div>
@@ -169,7 +169,7 @@ const TravelLogPage = () => {
         )}
 
         {newTripOpen && (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 overflow-y-auto">
+          <div className="modal-backdrop overflow-y-auto">
             <div className="w-full max-w-2xl my-auto">
               <NewTripEntryForm onClose={() => setNewTripOpen(false)} />
             </div>
