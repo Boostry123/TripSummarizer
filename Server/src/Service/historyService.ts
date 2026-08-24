@@ -4,8 +4,8 @@ import { history } from "@/Db/Schema.js";
 import { History, HistoryInsert, HistoryUpdate } from "@/Types/database.js";
 
 /**
- * Trip Service
- * Handles database operations for trips using Drizzle ORM.
+ * History Service
+ * Handles database operations for chat history using Drizzle ORM.
  */
 
 export const getHistory = async (user_id: string) => {
@@ -38,4 +38,14 @@ export const updateHistory = async (H: HistoryUpdate) => {
     .returning();
 
   return data;
+};
+
+export const deleteHistory = async (id: string, user_id: string) => {
+  const [data] = await db
+    .delete(history)
+    .where(and(eq(history.id, id), eq(history.user_id, user_id)))
+    .returning();
+
+  if (!data) throw new Error("History not found or unauthorized");
+  return true;
 };

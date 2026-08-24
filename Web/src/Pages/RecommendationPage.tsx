@@ -9,6 +9,7 @@ import { useGenerateRecommendation } from "@/hooks/useGenerateRecommendation";
 //Component
 import Card from "@/Components/Common/Card";
 import ImageContainer from "@/Components/Images/ImageContainer";
+import ConfirmationModal from "@/Components/Common/ConfirmationModal";
 //Helper
 import agentResponseToJson from "@/Helper/agentResponseToJson";
 import { useHistory } from "@/hooks/useHistory";
@@ -24,10 +25,11 @@ type recType = {
 };
 
 const RecommendationPage: React.FC = () => {
-  const allHistory = useHistory();
+  const { historyData, deleteHistory, isDeleting } = useHistory();
   const { mutate, isPending } = useGenerateRecommendation();
 
   const {
+    id: currentRecommendationId,
     recommendation,
     clearHistory,
     setRecommendation,
@@ -37,6 +39,7 @@ const RecommendationPage: React.FC = () => {
 
   const [adjustment, setAdjustment] = useState("");
   const [newTripOpen, setNewTripOpen] = useState(false);
+  const [historyToDelete, setHistoryToDelete] = useState<string | null>(null);
   const [historyModalOpen, setHistoryModalOpen] = useState(
     recommendation ? false : true,
   );
@@ -53,20 +56,33 @@ const RecommendationPage: React.FC = () => {
   };
 
   const handleRecentClicked = (r: recType) => {
-    const recentTrip: History | undefined = allHistory.historyData
-      ? allHistory.historyData.find((rec) => rec.id === r.id)
+    const recentTrip: History | undefined = historyData
+      ? historyData.find((rec) => rec.id === r.id)
       : undefined;
-    console.log(recentTrip);
     if (!recentTrip) return;
     clearHistory();
     const chosenRecommendation =
-      recentTrip.chat_history[recentTrip.chat_history.length - 1].content;
+      recentTrip.chat_history[recentTrip.chat_history.length - 1]?.content || "";
     setRecommendationId(recentTrip.id);
     setRecommendation(chosenRecommendation);
 
-    recentTrip.chat_history.map((h) => {
+    recentTrip.chat_history.forEach((h) => {
       addToHistory(h);
     });
+  };
+
+  const handleConfirmDelete = async () => {
+    if (!historyToDelete) return;
+    try {
+      await deleteHistory(historyToDelete);
+      if (currentRecommendationId === historyToDelete) {
+        clearHistory();
+      }
+    } catch (err) {
+      console.error("Failed to delete history:", err);
+    } finally {
+      setHistoryToDelete(null);
+    }
   };
 
   const recommendationToJson = useMemo(
@@ -76,21 +92,21 @@ const RecommendationPage: React.FC = () => {
 
   const recommendationHistory = useMemo(() => {
     let results: recType[] = [];
-    allHistory.historyData && allHistory.historyData.length > 0
-      ? allHistory.historyData.map((e) => {
-          const recLength = e.chat_history.length;
-          const recContent = e.chat_history[recLength - 1].content;
-          const { remainingData } = agentResponseToJson(recContent);
-          results.push({
-            id: e.id,
-            updated_at: e.updated_at || e.created_at,
-            country: remainingData.Country,
-            cities: remainingData.Cities,
-          });
-        })
-      : "No history";
+    if (historyData && historyData.length > 0) {
+      historyData.forEach((e) => {
+        const recLength = e.chat_history.length;
+        const recContent = e.chat_history[recLength - 1]?.content || "";
+        const { remainingData } = agentResponseToJson(recContent);
+        results.push({
+          id: e.id,
+          updated_at: e.updated_at || e.created_at,
+          country: remainingData.Country,
+          cities: remainingData.Cities,
+        });
+      });
+    }
     return results;
-  }, [allHistory.historyData]);
+  }, [historyData]);
 
   return (
     <div className="flex flex-col bg-primary-0 px-6 py-8 min-h-screen">
@@ -118,11 +134,25 @@ const RecommendationPage: React.FC = () => {
                     handleRecentClicked(r);
                   }}
                 >
-                  <div className="flex justify-center gap-2">
-                    <span className="font-bold">{`${r.country} (${r.cities})  `}</span>
-                    <span className="text-gray-400">
-                      {new Date(r.updated_at).toLocaleDateString()}
-                    </span>
+                  <div className="flex items-center justify-between gap-3">
+                    <div className="flex flex-col text-left">
+                      <span className="font-bold">{`${r.country} (${r.cities})`}</span>
+                      <span className="text-xs text-gray-400">
+                        {new Date(r.updated_at).toLocaleDateString()}
+                      </span>
+                    </div>
+                    <button
+                      type="button"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setHistoryToDelete(r.id);
+                      }}
+                      disabled={isDeleting}
+                      className="p-1 text-gray-400 hover:text-red-500 hover:bg-primary-0 rounded transition-colors cursor-pointer"
+                      title="Delete this history"
+                    >
+                      <HiTrash className="w-4 h-4" />
+                    </button>
                   </div>
                 </Card>
               ))}
@@ -196,7 +226,7 @@ const RecommendationPage: React.FC = () => {
         )}
       </div>
       {newTripOpen && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 overflow-y-auto">
+        <div className="modal-backdrop overflow-y-auto">
           <div className="w-full max-w-2xl my-auto">
             <NewTripEntryForm onClose={() => setNewTripOpen(false)} />
           </div>
@@ -239,6 +269,15 @@ const RecommendationPage: React.FC = () => {
           </button>
         </form>
       )}
+      <ConfirmationModal
+        isOpen={!!historyToDelete}
+        title="Delete History"
+        message="Are you sure you want to delete this recommendation history? This action cannot be undone."
+        confirmText="Delete"
+        isConfirming={isDeleting}
+        onCancel={() => setHistoryToDelete(null)}
+        onConfirm={handleConfirmDelete}
+      />
     </div>
   );
 };
