@@ -10,6 +10,7 @@ export const useGenerateRecommendation = () => {
 
   return useMutation({
     mutationFn: async (message?: string) => {
+      useRecommendationStore.setState({ isLoading: true });
       const history = useRecommendationStore.getState().history;
       const recId = useRecommendationStore.getState().id;
       const historyContext =
