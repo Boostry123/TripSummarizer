@@ -1,19 +1,19 @@
 import React, { useState, useMemo } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
-import { HiSparkles, HiTrash, HiX, HiArrowRight } from "react-icons/hi";
-//Store
+import { HiSparkles, HiTrash } from "react-icons/hi";
 import { useRecommendationStore } from "@/store/recommendationStore";
 //Hooks
 import { useGenerateRecommendation } from "@/hooks/useGenerateRecommendation";
+import { useHistory } from "@/hooks/useHistory";
 //Component
 import Card from "@/Components/Common/Card";
 import ImageContainer from "@/Components/Images/ImageContainer";
 import ConfirmationModal from "@/Components/Common/ConfirmationModal";
+import NewTripEntryForm from "@/Components/Trip/NewTripEntryForm";
+import HistoryDrawer from "@/Components/History/HistoryDrawer";
 //Helper
 import agentResponseToJson from "@/Helper/agentResponseToJson";
-import { useHistory } from "@/hooks/useHistory";
-import NewTripEntryForm from "@/Components/Trip/NewTripEntryForm";
 //Types
 import { History } from "@/Types/history";
 
@@ -62,13 +62,15 @@ const RecommendationPage: React.FC = () => {
     if (!recentTrip) return;
     clearHistory();
     const chosenRecommendation =
-      recentTrip.chat_history[recentTrip.chat_history.length - 1]?.content || "";
+      recentTrip.chat_history[recentTrip.chat_history.length - 1]?.content ||
+      "";
     setRecommendationId(recentTrip.id);
     setRecommendation(chosenRecommendation);
 
     recentTrip.chat_history.forEach((h) => {
       addToHistory(h);
     });
+    setHistoryModalOpen(false);
   };
 
   const handleConfirmDelete = async () => {
@@ -110,56 +112,17 @@ const RecommendationPage: React.FC = () => {
 
   return (
     <div className="flex flex-col bg-primary-0 px-6 py-8 min-h-screen">
-      <div className="fixed w-fit flex-col left-1 bg-primary-1 border items-end rounded">
-        <div className="col-span-1 justify-self-end pt-1 px-2">
-          <button
-            className={`text-gray-500 hover:text-primary-4 cursor-pointer  ${historyModalOpen ? "rounded-2xl bg-primary-0 border" : ""}`}
-            onClick={() => setHistoryModalOpen(!historyModalOpen)}
-          >
-            {historyModalOpen ? <HiX /> : <HiArrowRight />}
-          </button>
-        </div>
-
-        {historyModalOpen ? (
-          <div className="mx-1 w-fit rounded ">
-            <label className="font-bold">Recent:</label>
-            <div className="flex flex-col w-fit">
-              {recommendationHistory.map((r) => (
-                <Card
-                  padding={"small"}
-                  className={"bg-primary-1 m-2 border-0"}
-                  key={r.id}
-                  hoverable={true}
-                  onClick={() => {
-                    handleRecentClicked(r);
-                  }}
-                >
-                  <div className="flex items-center justify-between gap-3">
-                    <div className="flex flex-col text-left">
-                      <span className="font-bold">{`${r.country} (${r.cities})`}</span>
-                      <span className="text-xs text-gray-400">
-                        {new Date(r.updated_at).toLocaleDateString()}
-                      </span>
-                    </div>
-                    <button
-                      type="button"
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setHistoryToDelete(r.id);
-                      }}
-                      disabled={isDeleting}
-                      className="p-1 text-gray-400 hover:text-red-500 hover:bg-primary-0 rounded transition-colors cursor-pointer"
-                      title="Delete this history"
-                    >
-                      <HiTrash className="w-4 h-4" />
-                    </button>
-                  </div>
-                </Card>
-              ))}
-            </div>
-          </div>
-        ) : null}
-      </div>
+      {/* Dedicated History Drawer */}
+      <HistoryDrawer
+        isOpen={historyModalOpen}
+        onOpen={() => setHistoryModalOpen(true)}
+        onClose={() => setHistoryModalOpen(false)}
+        historyList={recommendationHistory}
+        currentId={currentRecommendationId}
+        onSelect={handleRecentClicked}
+        onDelete={(id) => setHistoryToDelete(id)}
+        isDeleting={isDeleting}
+      />
 
       <div className="mb-8">
         {isPending ? (
