@@ -28,13 +28,26 @@ TripSummarizer is an AI-driven travel logging web application. Users log trips, 
   - Every DB request MUST extract the user's JWT from the `Authorization` header.
   - The Service layer must instantiate a request-scoped Supabase client using `getSupabaseClient(token)` to enforce RLS under the user's identity.
   - Use `SUPABASE_ANON_KEY` for the server client to ensure RLS compliance.
+- **Core API Endpoints:**
+  - `/auth`: User registration, authentication, token refresh, and profile fetching.
+  - `/trips`: Full CRUD operations for user trip logs.
+  - `/chat`: AI recommendation generation and refinement (`POST /chat`). Supports continuous context by accepting `{ message, history, id? }`. Automatically handles auto-saving new sessions via `insertHistory` or updating existing sessions via `updateHistory` (stores the latest user adjustment and assistant recommendation).
+  - `/history`: Recommendation history sessions (`GET /history` to list sessions ordered by `created_at DESC`, `DELETE /history?id=...` to remove a session).
 
 ### 2. Web (Client) Architecture
 
 - **Auth Persistence:** JWTs are stored in `localStorage` (`Token`: `{ token, refreshToken, expiresAt }`).
 - **Refresh Flow:** The `useAuth` hook monitors a 45-minute timeout and automatically fetches a new session via `refreshToken` before expiry.
-- **State:** The user profile object lives ONLY in Zustand store memory (never `localStorage`).
-- **Cleanup:** `localStorage.clear()` must be executed on sign-out.
+- **State Management (Zustand):**
+  - User profile object lives ONLY in `authStore` memory (never `localStorage`).
+  - Active recommendation session state (`id`, `recommendation`, `history`) lives in `recommendationStore`.
+- **Server State & Data Fetching (TanStack Query):**
+  - `useHistory`: Queries `["history"]` for all user recommendation sessions and exposes `deleteHistory` mutation with automatic cache invalidation.
+  - `useGenerateRecommendation`: Mutation hook executing recommendation generation/refinement, updating `recommendationStore`, and invalidating `["history"]` query cache.
+- **UI Components:**
+  - `HistoryDrawer`: Slide-over drawer displaying past recommendation sessions with resume and deletion capabilities.
+  - `ConfirmationModal`: Reusable modal for destructive user actions (e.g., deleting history entries).
+- **Cleanup:** `localStorage.clear()` and `useRecommendationStore.getState().clearHistory()` must be executed on sign-out.
 
 ## Database Schema (PostgreSQL / Drizzle)
 
@@ -45,16 +58,16 @@ TripSummarizer is an AI-driven travel logging web application. Users log trips, 
   - Fields: `id` (uuid/PK), `user_id` (uuid/FK), `country`, `city` (text[]), `travel_date`, `rating` (smallint 1-5), `likes` (text[]), `hates` (text[]), `free_text`, `created_at`.
   - RLS: Full CRUD access ONLY where `auth.uid() = user_id`.
 - `history`: AI recommendation chat history sessions.
-  - Fields: `id` (uuid/PK), `user_id` (uuid/FK), `chat_history` (jsonb/Message[]), `created_at` (timestamp with timezone), `updated_at` (timestamp with timezone).
+  - Fields: `id` (uuid/PK defaultRandom), `user_id` (uuid/FK referencing `profiles.id` on delete cascade), `chat_history` (jsonb/Message[]), `created_at` (timestamp with timezone), `updated_at` (timestamp with timezone).
   - RLS: Full CRUD access ONLY where `auth.uid() = user_id`.
 
 ## Testing & Validation
 
 - **Server Tests:** Vitest. Run using `npm run test` (watch mode) or `npm test -- --run` in `/Server`.
-- **Key Test Areas:** Focus tests on Services and Zod Validation schemas.
+- **Key Test Areas:** Focus tests on Services (`historyService.test.ts`, `tripService.test.ts`) and Zod Validation schemas (`validation.test.ts`).
 - **CI/Validation:** Use `npm run validate` (runs Lint + TS strict check + Build).
 
 ## Current Development Focus
 
-- [x] Infrastructure, Auth, DB Schema, AI agent, Trip Entry UI, and Recommendation History Persistence.
+- [x] Infrastructure, Auth, DB Schema, AI agent, Trip Entry UI, and Recommendation History Persistence (Auto-saving, Updating, Deletion, Drawer UI).
 - [ ] **Next:** Polish & Visual Refining.
