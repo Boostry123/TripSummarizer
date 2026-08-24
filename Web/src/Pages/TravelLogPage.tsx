@@ -13,6 +13,7 @@ import {
 } from "react-icons/hi";
 import { Trip, TripUpdate } from "@/Types/trip";
 import Card from "@/Components/Common/Card";
+import BlobLoader from "@/Components/Loaders/BlobLoader";
 
 const TravelLogPage = () => {
   const [newLogOpen, setNewLogOpen] = useState(false);
@@ -50,8 +51,8 @@ const TravelLogPage = () => {
 
   return (
     <div className="bg-primary-0">
-      <main className="max-w-7xl mx-auto flex flex-col min-h-screen px-4 py-8">
-        <div className="text-center mb-10">
+      <main className="max-w-7xl mx-auto flex flex-col min-h-screen px-4 py-8 items-center">
+        <div className="text-center mb-10 z-1">
           <h2 className="text-3xl md:text-4xl font-bold mb-4">
             Log Your Adventure
           </h2>
@@ -78,10 +79,13 @@ const TravelLogPage = () => {
         </div>
 
         {/* Trips List */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <div
+          className={`grid ${!isLoading && "grid-cols-1 md:grid-cols-2 lg:grid-cols-3"} gap-6 z-1`}
+        >
           {isLoading && (
-            <div className="col-span-full text-center py-12">
-              <p>Loading your adventures...</p>
+            <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
+              <BlobLoader />
+              <p>Loading your trips...</p>
             </div>
           )}
 
@@ -187,6 +191,9 @@ const TravelLogPage = () => {
             }}
           />
         )}
+        <div className="fixed z-0 bottom-0">
+          <img src="world_vector.svg" width="1280" height="1098" className="" />
+        </div>
       </main>
     </div>
   );

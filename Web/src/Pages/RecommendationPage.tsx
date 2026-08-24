@@ -12,6 +12,7 @@ import ImageContainer from "@/Components/Images/ImageContainer";
 import ConfirmationModal from "@/Components/Common/ConfirmationModal";
 import NewTripEntryForm from "@/Components/Trip/NewTripEntryForm";
 import HistoryDrawer from "@/Components/History/HistoryDrawer";
+import BlobLoader from "@/Components/Loaders/BlobLoader";
 //Helper
 import agentResponseToJson from "@/Helper/agentResponseToJson";
 //Types
@@ -124,10 +125,10 @@ const RecommendationPage: React.FC = () => {
         isDeleting={isDeleting}
       />
 
-      <div className="mb-8">
+      <div className="mb-8 z-1">
         {isPending ? (
-          <div className="py-12 text-center space-y-4">
-            <div className="font-bold text-lg">Loading...</div>
+          <div className="flex flex-col items-center justify-center py-12 text-center space-y-4">
+            <BlobLoader />
             <p>Curating your next adventure...</p>
           </div>
         ) : recommendation ? (
@@ -198,7 +199,7 @@ const RecommendationPage: React.FC = () => {
       {recommendation && (
         <form
           onSubmit={handleGenerate}
-          className="space-y-4 p-6 border rounded-xl bg-primary-1"
+          className="space-y-4 p-6 border rounded-xl bg-primary-1 z-1"
         >
           <div>
             <label
@@ -241,6 +242,9 @@ const RecommendationPage: React.FC = () => {
         onCancel={() => setHistoryToDelete(null)}
         onConfirm={handleConfirmDelete}
       />
+      <div className="absolute z-0 self-center bottom-0">
+        <img src="world_vector.svg" width="1280" height="1098" className="" />
+      </div>
     </div>
   );
 };
