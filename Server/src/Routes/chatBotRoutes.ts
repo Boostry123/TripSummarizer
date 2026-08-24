@@ -27,28 +27,30 @@ chatBotRoutes.post("/", authenticate, async (req: AuthRequest, res) => {
       message,
       history,
     );
-    const newHistoryData: {
-      user_id: string;
-      chat_history: Message[];
-      id?: string;
-    } = {
-      id: id,
-      user_id: userId,
-      chat_history: [
-        { role: "user", content: message },
-        { role: "assistant", content: recommendation },
-      ],
-    };
-    let response: History[] | null = null;
-    if (history.length < 1) {
-      response = await insertHistory(newHistoryData);
+    const currentMessages: Message[] = [
+      {
+        role: "user",
+        content: message || "Generate a recommendation for my next trip.",
+      },
+      { role: "assistant", content: recommendation },
+    ];
 
-      console.log(
-        `inserting new history data: ${JSON.stringify(newHistoryData)}`,
-      );
+    let response: History[] | null = null;
+    if (!id) {
+      response = await insertHistory({
+        user_id: userId,
+        chat_history: currentMessages,
+      });
+
+      console.log(`inserting new history data for user: ${userId}`);
     } else {
-      console.log(`updating history data: ${JSON.stringify(newHistoryData)}`);
-      response = await updateHistory(newHistoryData);
+      const updateData = {
+        id: id,
+        user_id: userId,
+        chat_history: currentMessages,
+      };
+      console.log(`updating history data for id: ${id}`);
+      response = await updateHistory(updateData);
     }
 
     return res.status(200).json({ response });

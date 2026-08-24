@@ -13,7 +13,7 @@ export const useGenerateRecommendation = () => {
       const history = useRecommendationStore.getState().history;
       const recId = useRecommendationStore.getState().id;
       const historyContext =
-        history.length > 0 ? [history[0], history[history.length - 1]] : [];
+        history?.length > 0 ? [history[0], history[history.length - 1]] : [];
 
       // Perform the API call
       return await getRecommendation(message, historyContext, recId);

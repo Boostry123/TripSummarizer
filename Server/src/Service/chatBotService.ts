@@ -4,6 +4,7 @@ import { geminiText } from "@tanstack/ai-gemini";
 import { getTrips } from "./tripService.js";
 //types
 import { Trip } from "@/Types/database.js";
+import { Message } from "@/Types/history.js";
 //tools
 import { getImagesTool } from "@/Tools/imageSearchTool.js";
 
@@ -16,7 +17,7 @@ export const generateRecommendation = async (
   token: string,
   userId: string,
   userAdjustments?: string,
-  history: { role: "user" | "assistant"; content: string }[] = [],
+  history: Message[] = [],
 ) => {
   // 1. Fetch user trips
   const trips = await getTrips(token, userId);

@@ -18,7 +18,7 @@ export const getHistory = async (user_id: string) => {
   return data as History[];
 };
 
-export const insertHistory = async (H: HistoryInsert) => {
+export const insertHistory = async (H: Omit<HistoryInsert, "id">) => {
   const data = await db.insert(history).values(H).returning();
   return data as History[];
 };

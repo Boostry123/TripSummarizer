@@ -25,16 +25,19 @@ const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="modal-backdrop" onClick={onCancel}>
+    <div
+      className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/40 backdrop-blur-xs animate-in fade-in duration-150"
+      onClick={onCancel}
+    >
       <Card
-        className="w-full max-w-sm shadow-xl p-6 space-y-4 bg-primary-1 border text-center"
+        className="w-full max-w-sm shadow-xl p-6 space-y-4 bg-primary-1 border"
         padding="none"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="p-5 space-y-3">
           <h3 className="font-bold text-lg">{title}</h3>
           <p className="text-sm text-gray-600">{message}</p>
-          <div className="flex justify-center gap-3 pt-2">
+          <div className="flex justify-end gap-2 pt-2">
             <button
               type="button"
               onClick={onCancel}
