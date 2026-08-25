@@ -1,27 +1,31 @@
+import React from "react";
 import Card from "@/Components/Common/Card";
 import { UnsplashAttribution } from "@/Components/Images/UnsplashAttribution";
 
-interface imageContainerParams {
+interface ImageContainerParams {
   URL: string | undefined;
   user: { name: string; link: string } | undefined;
 }
 
-const ImageContainer = (params: imageContainerParams) => {
-  const imageUrl = params.URL;
-
+const ImageContainer: React.FC<ImageContainerParams> = ({ URL, user }) => {
   return (
-    <Card className="flex flex-col justify-center">
-      <img
-        src={imageUrl ?? ""}
-        alt="Image"
-        referrerPolicy="no-referrer"
-        className="max-w-xl"
-      />
-      {params.user ? (
-        <UnsplashAttribution user={params.user} appName={"TripSummarizer"} />
-      ) : (
-        ""
-      )}
+    <Card
+      padding="none"
+      className="flex flex-col justify-center w-full max-w-xl"
+    >
+      <div className="w-full aspect-video overflow-hidden rounded-3xl">
+        <img
+          src={URL ?? ""}
+          alt="Trip Destination"
+          referrerPolicy="no-referrer"
+          className="w-full h-full object-cover object-center"
+        />
+      </div>
+      {user?.name ? (
+        <div className="mt-2 text-center">
+          <UnsplashAttribution user={user} appName="TripSummarizer" />
+        </div>
+      ) : null}
     </Card>
   );
 };
