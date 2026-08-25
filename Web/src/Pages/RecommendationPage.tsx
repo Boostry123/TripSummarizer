@@ -1,4 +1,4 @@
-import React, { useState, useMemo } from "react";
+import React, { useState, useMemo, useEffect } from "react";
 import ReactMarkdown from "react-markdown";
 import remarkBreaks from "remark-breaks";
 import { HiSparkles, HiTrash } from "react-icons/hi";
@@ -17,6 +17,7 @@ import BlobLoader from "@/Components/Loaders/BlobLoader";
 import agentResponseToJson from "@/Helper/agentResponseToJson";
 //Types
 import { History } from "@/Types/history";
+import checkImageUrl from "@/Helper/checkImageUrl";
 
 type recType = {
   id: string;
@@ -45,6 +46,8 @@ const RecommendationPage: React.FC = () => {
   const [historyModalOpen, setHistoryModalOpen] = useState(
     recommendation ? false : true,
   );
+  const defaultImagePath = "/defaultRecImage.jpg";
+  const [imageURL, setImageURL] = useState(defaultImagePath);
 
   const handleGenerate = (e: React.SubmitEvent) => {
     e.preventDefault();
@@ -90,9 +93,32 @@ const RecommendationPage: React.FC = () => {
   };
 
   const recommendationToJson = useMemo(
-    () => agentResponseToJson(recommendation),
+    () => recommendation && agentResponseToJson(recommendation),
     [recommendation],
   );
+
+  useEffect(() => {
+    let isMounted = true;
+
+    const verifyImage = async () => {
+      if (recommendationToJson) {
+        const isValid = await checkImageUrl(recommendationToJson.imageUrl);
+
+        if (isValid && isMounted) {
+          setImageURL(recommendationToJson.imageUrl);
+        } else if (isMounted) {
+          setImageURL(defaultImagePath);
+        }
+      }
+    };
+
+    verifyImage();
+
+    // Cleanup function
+    return () => {
+      isMounted = false;
+    };
+  }, [recommendationToJson]);
 
   const recommendationHistory = useMemo(() => {
     let results: recType[] = [];
@@ -132,18 +158,18 @@ const RecommendationPage: React.FC = () => {
             <BlobLoader />
             <p>Curating your next adventure...</p>
           </div>
-        ) : recommendation ? (
+        ) : recommendationToJson ? (
           <div className="flex flex-col space-y-4 justify-center items-center">
-            {recommendationToJson.imageUrl ? (
-              <div className="flex justify-center">
-                <ImageContainer
-                  URL={recommendationToJson.imageUrl}
-                  user={recommendationToJson.imageUser}
-                />
-              </div>
-            ) : (
-              "No image"
-            )}
+            <div className="flex justify-center">
+              <ImageContainer
+                URL={imageURL}
+                user={
+                  imageURL !== defaultImagePath
+                    ? recommendationToJson.imageUser
+                    : undefined
+                }
+              />
+            </div>
             <div className="prose max-w-prose">
               <Card>
                 <div className="flex justify-end">

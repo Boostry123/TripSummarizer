@@ -2,7 +2,7 @@ import { agentResponseObject } from "@/Types/agent";
 
 const agentResponseToJson = (Res: string | undefined | null) => {
   let imageUrl = "";
-  let imageUser = { name: "", link: "" };
+  const imageUser = { name: "", link: "" };
   let parsedObject: agentResponseObject = {
     Country_Image: {
       image_url: "",
@@ -17,11 +17,11 @@ const agentResponseToJson = (Res: string | undefined | null) => {
   };
   try {
     parsedObject = JSON.parse(Res ?? "{}");
-    imageUrl = parsedObject.Country_Image.image_url;
-    imageUser["name"] = parsedObject.Country_Image.photographer_name;
-    imageUser["link"] = parsedObject.Country_Image.photographer_link;
-  } catch (error) {
-    console.log("Had a problem converting the Recommendation to a json");
+    imageUrl = parsedObject?.Country_Image?.image_url || "";
+    imageUser.name = parsedObject?.Country_Image?.photographer_name || "";
+    imageUser.link = parsedObject?.Country_Image?.photographer_link || "";
+  } catch {
+    // Malformed json fallback
   }
 
   const { Country_Image, ...remainingData } = parsedObject;
