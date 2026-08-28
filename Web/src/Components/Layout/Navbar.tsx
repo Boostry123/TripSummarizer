@@ -29,10 +29,10 @@ const Navbar = () => {
   };
 
   return (
-    <nav className="drop-shadow-lg bg-primary-1">
+    <nav className="fixed w-full z-50 drop-shadow-lg bg-primary-1">
       <div className="w-full flex items-center justify-between px-4 py-2 gap-4 whitespace-nowrap">
         {/* Left - Brand */}
-        <div className="flex flex-1 justify-start items-center font-bold text-lg">
+        <div className="flex flex-1 justify-start items-center font-bold text-2xl">
           <Link to="/" onClick={closeMenu}>
             TripSummarizer
           </Link>
@@ -40,9 +40,9 @@ const Navbar = () => {
 
         {/* Middle - Travel Log (Desktop) */}
         {!isMobile && (
-          <div className="flex items-center justify-center border-2 hover:bg-primary-0 transition-colors duration-200 rounded-2xl">
-            <Link to="/travel-log" className="px-4 py-2 font-medium">
-              Travel Log
+          <div className="flex items-center justify-center hover:bg-primary-0 transition-colors duration-200 rounded-xl">
+            <Link to="/travel-log" className="px-4 py-2 font-bold">
+              - Travel Log -
             </Link>
           </div>
         )}
@@ -51,14 +51,14 @@ const Navbar = () => {
         <div className="flex flex-1 items-center justify-end">
           {/* Desktop Nav */}
           {!isMobile && (
-            <div className="flex items-center border-2 rounded-2xl">
+            <div className="flex items-center ">
               {navLinks.map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className="px-4 py-2 font-medium hover:bg-primary-0 transition-colors duration-200 rounded-2xl"
+                  className="px-4 py-2 font-bold hover:bg-primary-0 transition-colors duration-200 rounded-2xl"
                 >
-                  {link.name}
+                  - {link.name} -
                 </Link>
               ))}
 

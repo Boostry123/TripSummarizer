@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 /**
  * Hook to detect if the current viewport is mobile (width < 768px)
  */
-export const useMobile = (breakpoint: number = 768) => {
+export const useMobile = (breakpoint: number = 1000) => {
   const [isMobile, setIsMobile] = useState<boolean>(
     typeof window !== "undefined" ? window.innerWidth < breakpoint : false,
   );
