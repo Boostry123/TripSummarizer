@@ -96,7 +96,7 @@ const HistoryDrawer: React.FC<HistoryDrawerProps> = ({
                 >
                   <div className="flex flex-col text-left min-w-0 flex-1">
                     <span
-                      className="font-bold text-sm text-gray-900 leading-snug break-words"
+                      className="font-bold text-sm text-gray-900 leading-snug wrap-break-words"
                       title={fullTitle}
                     >
                       {truncateText(fullTitle, isMobile ? 35 : 55)}
