@@ -3,6 +3,11 @@
 TripSummarizer is an AI-powered travel log synthesizer and recommendation web application. Users can record detailed logs of their past trips, rate specific locations/activities, and express likes, hates, and narratives. The core engine analyzes this accumulated personal history using local AI models to understand their unique travel preferences and generate personalized recommendations for their next adventure.
 
 ---
+<img width="960" height="460" alt="1786700349435" src="https://github.com/user-attachments/assets/ba8e8c20-57ee-4223-9ddf-6449a8998f55" />
+
+
+
+
 
 ## 🏗️ Architecture & Project Structure
 
